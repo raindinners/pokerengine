@@ -40,15 +40,15 @@ def game_state(engine: EngineRake01) -> str:
     return to_return
 
 
-def core(engine: EngineRake01, cards: Cards, user: int) -> None:
+def core(engine: EngineRake01, cards: Cards) -> None:
     print(
         "The active player is:",
         engine.positions_manager.current.name,
-        "(bot)" if engine.positions_manager.current.value != user else "(this is you)",
+        "(bot)" if engine.positions_manager.current != PositionEnum.SB else "(this is you)",
     )
 
     if engine.positions_manager.current == PositionEnum.SB:
-        print("Your cards are:", cards.hands[user].as_string())
+        print("Your cards are:", cards.hands[PositionEnum.SB.value].as_string())
 
         board_cards_to_print = get_board_cards_to_print(engine.round_manager.round)
         if not board_cards_to_print:
