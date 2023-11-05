@@ -1,0 +1,14 @@
+[build-system]
+requires = ["scikit-build-core>=0.3.3", "pybind11"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "pokerengine"
+version = "0.2"
+description = "Poker Library"
+readme = "README.md"
+authors = [
+    {name = "likecompany"}
+]
+requires-python = ">=3.8"
+keywords = ["poker", "texas", "holdem", "texas-holdem", "texas_holdem", "pybind11", "scikit-build-core", "fast", "c++"]
