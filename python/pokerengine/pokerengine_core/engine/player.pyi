@@ -6,6 +6,7 @@ from pokerengine.pokerengine_core.enums.state import StateEnum
 
 class Player:
     is_left: bool
+    stack: int
     behind: int
     front: int
     round_bet: int
@@ -14,6 +15,7 @@ class Player:
     def __init__(
         self,
         is_left: bool,
+        stack: int,
         behind: int,
         front: int,
         round_bet: int,

@@ -77,9 +77,7 @@ def core(engine: EngineRake01, cards: Cards) -> None:
             if action.action == ActionEnum.RAISE:
                 try:
                     amount = int(
-                        input(
-                            f"Enter amount from {engine.traits.min_raise} to {action.amount}: "
-                        )
+                        input(f"Enter amount from {engine.traits.min_raise} to {action.amount}: ")
                     )
                 except ValueError:
                     print("Invalid amount")
@@ -110,9 +108,14 @@ def core(engine: EngineRake01, cards: Cards) -> None:
 
         for index in range(len(chips)):
             if engine.is_showdown():
-                print(f"Combination {chips[index][0].as_string_long()},", f"Player[{index}],", "Got chips", chips[index][1])
+                print(
+                    f"Combination {chips[index][0].as_string_long()},",
+                    f"Player[{index}],",
+                    "Got chips",
+                    chips[index][1],
+                )
             else:
-                print(chips[index])
+                print(f"Player[{index}],", "Got chips", chips[index])
 
         raise GameEndedError
 
@@ -138,14 +141,28 @@ def __main__(args: Namespace) -> None:
                 core(engine=engine, cards=cards)
             except GameEndedError:
                 time.sleep(10)
-                engine.start(True)
+
+                try:
+                    engine.start(True)
+                except RuntimeError:
+                    print("====================================================================")
+                    print("Game was ended")
+                    exit(0)
                 break
 
 
 def main() -> None:
     parser = ArgumentParser(prog="Poker", description="The poker game")
-    parser.add_argument("-p", "--players", help="How many players in the game", default=7, type=int)
-    parser.add_argument("-s", "--seed", help="Seed for card generator", default=int(time.time()), type=int)
+    parser.add_argument(
+        "-p", "--players", help="How many players in the game", default=7, type=int
+    )
+    parser.add_argument(
+        "-s",
+        "--seed",
+        help="Seed for card generator",
+        default=int(time.time()),
+        type=int,
+    )
 
     args = parser.parse_args()
     __main__(args)

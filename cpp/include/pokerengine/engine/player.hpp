@@ -25,6 +25,7 @@ enum class state_t {
 struct player {
     bool is_left = false;
 
+    int32_t stack;
     int32_t behind;
     int32_t front;
     int32_t round_bet;
@@ -52,7 +53,7 @@ public:
     }
 
     auto add_player(int32_t stack, enums::state_t state = enums::state_t::init) -> void {
-        players_.emplace_back(false, stack, 0, 0, state);
+        players_.emplace_back(false, stack, 0, 0, 0, state);
     }
 
     auto remove_player(uint8_t index) -> void {

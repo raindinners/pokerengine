@@ -217,42 +217,34 @@ public:
                                                             std::get< 2 >(element));
                         });
 
-        std::vector< std::pair< result, int32_t > > result;
-        for (uint8_t index = 0; index < iterable.size(); index++) {
-            auto evaluation_result = get_evaluation_result_one(cards, index);
-            result.emplace_back(evaluation_result, chips[index]);
-        }
-
-        for (size_t index = 0; index < iterable.size(); index++) {
-            iterable[index].behind += result[index].second;
-        }
+        std::vector< std::pair< result, int32_t > > results;
+        std::for_each(iterable.begin(), iterable.end(), [&, index = 0](auto &player) mutable -> void {
+            auto result = results.emplace_back(get_evaluation_result_one(cards, index), chips[index++]);
+            player.stack += result.second;
+        });
         value_.set_players(iterable);
 
-        return result;
+        return results;
     }
 
     [[maybe_unused]] auto pay_noshowdown(bool flop_dealt) -> std::vector< int32_t > {
         auto iterable = value_.get_players();
-
         auto adjusted_pot = actual::get_adjust_pot< A, B >(iterable, get_highest_bet(), flop_dealt);
-
         auto winner = std::distance(
                         iterable.cbegin(),
                         std::find_if(iterable.cbegin(), iterable.cend(), [](const auto &element) {
                             return element.state != enums::state_t::out;
                         }));
 
-        std::vector< int32_t > result;
-        for (size_t i = 0; auto const &player : iterable) {
-            result.push_back(i++ == winner ? -player.front + adjusted_pot : -player.front);
-        }
-
-        for (size_t index = 0; index < iterable.size(); index++) {
-            iterable[index].behind += result[index];
-        }
+        std::vector< int32_t > results;
+        std::for_each(iterable.begin(), iterable.end(), [&, index = 0](auto &player) mutable -> void {
+            auto result = results.emplace_back(
+                            index++ == winner ? -player.front + adjusted_pot : -player.front);
+            player.stack += result;
+        });
         value_.set_players(iterable);
 
-        return result;
+        return results;
     }
 };
 } // namespace pokerengine

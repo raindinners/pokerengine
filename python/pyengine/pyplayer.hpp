@@ -17,14 +17,16 @@ auto setup_pyplayer(py::module_ &module_) -> void {
     auto player = module_.def_submodule("player");
 
     py::class_< pokerengine::player >(player, "Player", py::module_local())
-                    .def(py::init< bool, int32_t, int32_t, int32_t, pokerengine::enums::state_t >(),
+                    .def(py::init< bool, int32_t, int32_t, int32_t, int32_t, pokerengine::enums::state_t >(),
                          py::arg("is_left"),
+                         py::arg("stack"),
                          py::arg("behind"),
                          py::arg("front"),
                          py::arg("round_bet"),
                          py::arg("state"))
                     .def(py::self == py::self, py::arg("other")) // NOLINT
                     .def_readwrite("is_left", &pokerengine::player::is_left)
+                    .def_readwrite("stack", &pokerengine::player::stack)
                     .def_readwrite("behind", &pokerengine::player::behind)
                     .def_readwrite("front", &pokerengine::player::front)
                     .def_readwrite("round_bet", &pokerengine::player::round_bet)

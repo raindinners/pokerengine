@@ -4,7 +4,6 @@ from typing import List, overload
 
 import pybind11_stubgen.typing_ext
 import typing_extensions
-
 from pokerengine.pokerengine_core.card.card import Card, CardSet
 
 class Hand:

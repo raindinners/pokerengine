@@ -38,10 +38,10 @@ namespace v1 {
 auto get_players(const std::vector< player > &players, bool rotate = false) -> std::vector< player > {
     std::vector< player > result;
     std::copy_if(players.cbegin(), players.cend(), std::back_inserter(result), [](const auto &player) -> bool {
-        return !(player.behind <= 0 || player.is_left);
+        return !(player.stack <= 0 || player.is_left);
     });
 
-    if (players.size() < constants::MIN_PLAYERS || players.size() > constants::MAX_PLAYERS) {
+    if (result.size() < constants::MIN_PLAYERS || result.size() > constants::MAX_PLAYERS) {
         throw std::runtime_error{ "Players size invalid" };
     }
 
@@ -62,32 +62,35 @@ auto is_all_allin(const std::vector< player > &players) -> bool {
 }
 
 auto set_blinds(std::vector< player > &players, int32_t sb_bet, int32_t bb_bet) -> void {
-    for (size_t index = 0; index < players.size(); index++) {
-        players[index].state = enums::state_t::init;
-        players[index].round_bet = 0;
-        players[index].front = 0;
+    std::for_each(players.begin(), players.end(), [&, index = 0](auto &player) mutable -> void {
+        player.state = enums::state_t::init;
+        player.behind = player.stack;
+        player.round_bet = 0;
+        player.front = 0;
 
         if (index < 2) {
             if (players.size() == constants::MIN_PLAYERS) {
-                players[index].front = index == 0 ? bb_bet : sb_bet;
+                player.front = index == 0 ? bb_bet : sb_bet;
             } else {
-                players[index].front = index == 0 ? sb_bet : bb_bet;
+                player.front = index == 0 ? sb_bet : bb_bet;
             }
 
-            players[index].state = enums::state_t::alive;
+            player.state = enums::state_t::alive;
 
-            if (players[index].front > players[index].behind) {
-                players[index].front = players[index].behind;
+            if (player.front > player.behind) {
+                player.front = player.behind;
             }
 
-            players[index].behind -= players[index].front;
-            players[index].round_bet = players[index].front;
+            player.behind -= player.front;
+            player.round_bet = player.front;
+
+            if (player.behind == 0) {
+                player.state = enums::state_t::allin;
+            }
         }
 
-        if (players[index].behind == 0) {
-            players[index].state = enums::state_t::allin;
-        }
-    }
+        index++;
+    });
 }
 } // namespace v1
 
