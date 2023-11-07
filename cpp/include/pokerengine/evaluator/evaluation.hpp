@@ -10,6 +10,7 @@
 
 #include "bits.hpp"
 #include "card/cards.hpp"
+#include "enums.hpp"
 #include "evaluator/lookup_tables.hpp"
 #include "evaluator/result.hpp"
 #include "pokerengine.hpp"
@@ -26,9 +27,9 @@ auto evaluate_unsafe(const card_set &cs) noexcept -> result {
         auto flush_or_straight_flush = [](uint16_t mask_flush) -> result {
             auto x = poker_table_straight[mask_flush];
             if (x > 0) {
-                return result{ enums::combination_t::straight_flush, x, 0, 0 };
+                return result{ enums::combination::straight_flush, x, 0, 0 };
             } else {
-                return result{ enums::combination_t::flush, 0, 0, poker_table_top5[mask_flush] };
+                return result{ enums::combination::flush, 0, 0, poker_table_top5[mask_flush] };
             }
         };
 
@@ -47,7 +48,7 @@ auto evaluate_unsafe(const card_set &cs) noexcept -> result {
 
     if (uint16_t mask_quads = (mask_c & mask_d & mask_h & mask_s); mask_quads) {
         return result{
-            enums::combination_t::four_of_a_kind,
+            enums::combination::four_of_a_kind,
             bits::cross_idx_high16(mask_quads),
             0,
             static_cast< uint16_t >((uint16_t(1) << bits::cross_idx_high16(mask_all_cards & ~mask_quads)))
@@ -58,7 +59,7 @@ auto evaluate_unsafe(const card_set &cs) noexcept -> result {
 
     if (mask_trips) {
         if (std::popcount(mask_trips) > 1) {
-            return result{ enums::combination_t::full_house,
+            return result{ enums::combination::full_house,
                            bits::cross_idx_high16(mask_trips),
                            bits::cross_idx_low16(mask_trips),
                            0 };
@@ -66,7 +67,7 @@ auto evaluate_unsafe(const card_set &cs) noexcept -> result {
 
         if (const uint16_t mask_pair_fh = (mask_all_cards ^ (mask_c ^ mask_d ^ mask_h ^ mask_s));
             mask_pair_fh) {
-            return result{ enums::combination_t::full_house,
+            return result{ enums::combination::full_house,
                            bits::cross_idx_high16(mask_trips),
                            bits::cross_idx_high16(mask_pair_fh),
                            0 };
@@ -75,14 +76,14 @@ auto evaluate_unsafe(const card_set &cs) noexcept -> result {
 
     auto rank_straight = poker_table_straight[mask_all_cards];
     if (rank_straight > 0) {
-        return result{ enums::combination_t::straight, rank_straight, 0, 0 };
+        return result{ enums::combination::straight, rank_straight, 0, 0 };
     }
 
     if (mask_trips) {
         uint16_t mask_kickers = mask_all_cards & ~(mask_trips);
         auto high_kicker = bits::cross_idx_high16(mask_kickers);
         auto low_kicker = bits::cross_idx_high16(mask_kickers & ~(uint16_t(1) << high_kicker));
-        return result{ enums::combination_t::three_of_a_kind,
+        return result{ enums::combination::three_of_a_kind,
                        bits::cross_idx_high16(mask_trips),
                        0,
                        static_cast< uint16_t >(uint16_t(1) << high_kicker | uint16_t(1) << low_kicker) };
@@ -94,19 +95,18 @@ auto evaluate_unsafe(const card_set &cs) noexcept -> result {
         auto low_rank = bits::cross_idx_high16(mask_pair & ~(uint16_t(1) << high_rank));
         auto kicker_rank = bits::cross_idx_high16(
                         mask_all_cards & ~(uint16_t(1) << high_rank | uint16_t(1) << low_rank));
-        return result{ enums::combination_t::two_pair,
+        return result{ enums::combination::two_pair,
                        high_rank,
                        low_rank,
                        static_cast< uint16_t >(uint16_t(1) << kicker_rank) };
     } else if (num_pairs > 0) {
         uint16_t mask_kickers = mask_all_cards & ~(mask_pair);
-        return result{ enums::combination_t::one_pair,
-                       bits::cross_idx_high16(mask_pair),
-                       0,
-                       poker_table_top3[mask_kickers] };
+        return result{
+            enums::combination::one_pair, bits::cross_idx_high16(mask_pair), 0, poker_table_top3[mask_kickers]
+        };
     }
 
-    return result{ enums::combination_t::no_pair, 0, 0, poker_table_top5[mask_all_cards] };
+    return result{ enums::combination::no_pair, 0, 0, poker_table_top5[mask_all_cards] };
 }
 } // namespace pokerengine
 

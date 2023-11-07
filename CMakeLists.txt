@@ -30,6 +30,7 @@ set(HEADER_FILES
         ${CPP_INCLUDE_DIR}/pokerengine/engine/positions.hpp
         ${CPP_INCLUDE_DIR}/pokerengine/engine/pot.hpp
         ${CPP_INCLUDE_DIR}/pokerengine/engine/round.hpp
+        ${CPP_INCLUDE_DIR}/pokerengine/enums.hpp
         ${CPP_INCLUDE_DIR}/pokerengine/pokerengine.hpp
         ${CPP_INCLUDE_DIR}/pokerengine/types.hpp
         ${CPP_INCLUDE_DIR}/pokerengine/utils.hpp

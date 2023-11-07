@@ -24,42 +24,30 @@
 #include "engine/player.hpp"
 #include "engine/positions.hpp"
 #include "engine/pot.hpp"
+#include "enums.hpp"
 #include "pokerengine.hpp"
 
 namespace pokerengine {
-namespace enums {
-enum class action_t : uint8_t {
-    fold = 0,
-    check = 1,
-    call = 2,
-    bet = 3,
-    raise = 4,
-    allin = 5,
-    no_action = 6,
-};
-} // namespace enums
-
 struct player_action {
     int32_t amount;
-    enums::action_t action;
-    enums::position_t position;
+    enums::action action;
+    enums::position position;
 
     auto operator<=>(const player_action &other) const noexcept -> std::strong_ordering = delete;
     auto operator==(const player_action &other) const noexcept -> bool = default;
 };
 
 namespace v1 {
-auto is_no_actions_available(enums::rounds_t round, enums::state_t state) noexcept -> bool {
-    return (state == enums::state_t::out || state == enums::state_t::allin) ||
-                    round == enums::rounds_t::showdown;
+auto is_no_actions_available(enums::round round, enums::state state) noexcept -> bool {
+    return (state == enums::state::out || state == enums::state::allin) || round == enums::round::showdown;
 }
 
-auto get_fold_or_check(enums::position_t player, int32_t highest_round_bet, int32_t committed) noexcept
+auto get_fold_or_check(enums::position player, int32_t highest_round_bet, int32_t committed) noexcept
                 -> player_action {
     if (committed == highest_round_bet) {
-        return player_action{ 0, enums::action_t::check, player };
+        return player_action{ 0, enums::action::check, player };
     }
-    return player_action{ 0, enums::action_t::fold, player };
+    return player_action{ 0, enums::action::fold, player };
 }
 
 auto is_bet_available(int32_t bb_bet, int32_t highest_round_bet, int32_t remaining) noexcept -> bool {
@@ -71,7 +59,7 @@ auto is_call_available(int32_t highest_round_bet, int32_t committed, int32_t rem
 }
 
 auto is_raise_available(
-                enums::state_t state,
+                enums::state state,
                 int32_t highest_round_bet,
                 int32_t min_raise,
                 int32_t committed,
@@ -80,7 +68,7 @@ auto is_raise_available(
         return false;
     }
 
-    return (state == enums::state_t::init || state == enums::state_t::alive) ||
+    return (state == enums::state::init || state == enums::state::alive) ||
                     (committed < highest_round_bet && (highest_round_bet - committed >= min_raise));
 }
 
@@ -89,9 +77,9 @@ auto is_allin_available(int32_t remaining) noexcept -> bool {
 }
 
 auto get_possible_actions(
-                enums::rounds_t round,
-                enums::position_t player,
-                enums::state_t state,
+                enums::round round,
+                enums::position player,
+                enums::state state,
                 bool is_left,
                 int32_t bb_bet,
                 int32_t min_raise,
@@ -100,7 +88,7 @@ auto get_possible_actions(
                 int32_t remaining) -> std::vector< player_action > {
     if (is_no_actions_available(round, state)) {
         return std::vector< player_action >{ player_action{
-                        0, enums::action_t::no_action, enums::position_t::no_position } };
+                        0, enums::action::no_action, enums::position::no_position } };
     }
 
     std::vector< player_action > actions{ get_fold_or_check(player, highest_round_bet, committed) };
@@ -110,19 +98,19 @@ auto get_possible_actions(
     }
 
     if (is_bet_available(bb_bet, highest_round_bet, remaining)) {
-        actions.emplace_back(bb_bet, enums::action_t::bet, player);
+        actions.emplace_back(bb_bet, enums::action::bet, player);
     }
 
     if (is_call_available(highest_round_bet, committed, remaining)) {
-        actions.emplace_back(highest_round_bet - committed, enums::action_t::call, player);
+        actions.emplace_back(highest_round_bet - committed, enums::action::call, player);
     }
 
     if (is_raise_available(state, highest_round_bet, min_raise, committed, remaining)) {
-        actions.emplace_back(remaining, enums::action_t::raise, player);
+        actions.emplace_back(remaining, enums::action::raise, player);
     }
 
     if (is_allin_available(remaining)) {
-        actions.emplace_back(remaining, enums::action_t::allin, player);
+        actions.emplace_back(remaining, enums::action::allin, player);
     }
 
     return actions;
@@ -131,13 +119,13 @@ auto get_possible_actions(
 auto is_normal_action(
                 const player_action &pa,
                 const std::vector< player_action > &all_actions,
-                enums::position_t player,
+                enums::position player,
                 int32_t min_raise) -> bool {
-    return pa.position == player && player != enums::position_t::no_position &&
+    return pa.position == player && player != enums::position::no_position &&
                     (std::find_if(all_actions.cbegin(), all_actions.cend(), [&](const auto &element) -> bool {
                          return (element == pa) ||
-                                         (pa.action == enums::action_t::raise &&
-                                          element.action == enums::action_t::raise &&
+                                         (pa.action == enums::action::raise &&
+                                          element.action == enums::action::raise &&
                                           pa.amount < element.amount && pa.amount >= min_raise);
                      }) != all_actions.cend());
 }
@@ -147,16 +135,16 @@ auto execute_action(const player_action &pa, player &player, int32_t min_raise, 
     int32_t new_min_raise = min_raise;
 
     switch (pa.action) {
-    case enums::action_t::fold: {
-        player.state = enums::state_t::out;
+    case enums::action::fold: {
+        player.state = enums::state::out;
     } break;
-    case enums::action_t::check: {
-        player.state = enums::state_t::alive;
+    case enums::action::check: {
+        player.state = enums::state::alive;
     } break;
-    case enums::action_t::call:
-    case enums::action_t::bet:
-    case enums::action_t::raise:
-    case enums::action_t::allin: {
+    case enums::action::call:
+    case enums::action::bet:
+    case enums::action::raise:
+    case enums::action::allin: {
         int32_t raise_size = pa.amount + player.round_bet - highest_round_bet;
         if (raise_size > min_raise) {
             new_min_raise = raise_size;
@@ -166,7 +154,7 @@ auto execute_action(const player_action &pa, player &player, int32_t min_raise, 
         player.front += pa.amount;
         player.round_bet += pa.amount;
 
-        player.state = player.behind == 0 ? enums::state_t::allin : enums::state_t::alive;
+        player.state = player.behind == 0 ? enums::state::allin : enums::state::alive;
     } break;
     default: {
         throw std::runtime_error{ "Got invalid action to execute" };
@@ -245,13 +233,13 @@ public:
         players.set_players(new_players);
 
         if (actual::is_all_allin(new_players)) {
-            round.set_round(enums::rounds_t::showdown);
+            round.set_round(enums::round::showdown);
         } else {
             positions.set_current(
-                            new_players.size() > constants::MIN_PLAYERS ? enums::position_t::utg :
-                                                                          enums::position_t::bb);
+                            new_players.size() > constants::MIN_PLAYERS ? enums::position::utg :
+                                                                          enums::position::bb);
 
-            if (positions.get_player().state == enums::state_t::allin) {
+            if (positions.get_player().state == enums::state::allin) {
                 positions.set_next_current();
             }
         }
@@ -263,7 +251,7 @@ public:
     }
 
     [[nodiscard]] auto in_terminal_state() const noexcept -> bool {
-        return round.get_round() == enums::rounds_t::showdown;
+        return round.get_round() == enums::round::showdown;
     }
 
     [[nodiscard]] auto is_showdown() const -> bool {
@@ -308,25 +296,25 @@ public:
             if (!round.get_flop_dealt()) {
                 round.set_flop_dealt(
                                 std::find_if(iterable.cbegin(), iterable.cend(), [](const auto &value) -> bool {
-                                    return value.state == enums::state_t::allin;
+                                    return value.state == enums::state::allin;
                                 }) != iterable.cend());
             }
 
-            round.set_round(enums::rounds_t::showdown);
+            round.set_round(enums::round::showdown);
         } else if (auto last_player = std::distance(
                                    iterable.cbegin(),
                                    std::find_if(iterable.cbegin(),
                                                 iterable.cend(),
                                                 [](const auto &element) -> bool {
-                                                    return element.state != enums::state_t::out &&
-                                                                    element.state != enums::state_t::allin;
+                                                    return element.state != enums::state::out &&
+                                                                    element.state != enums::state::allin;
                                                 }));
                    get_actionable() == 1 && get_future_actionable() == 1 &&
                    iterable[last_player].round_bet == pot.get_round_highest_bet()) {
-            round.set_flop_dealt(true), round.set_round(enums::rounds_t::showdown);
+            round.set_flop_dealt(true), round.set_round(enums::round::showdown);
         } else if (actions == 0) {
-            if (round.get_round() == enums::rounds_t::river) {
-                round.set_round(enums::rounds_t::showdown);
+            if (round.get_round() == enums::round::river) {
+                round.set_round(enums::round::showdown);
             } else {
                 positions.set_next_round_player();
 
@@ -335,8 +323,7 @@ public:
 
                 std::for_each(iterable.begin(), iterable.end(), [](auto &element) {
                     element.round_bet = 0;
-                    element.state = element.state == enums::state_t::alive ? enums::state_t::init :
-                                                                             element.state;
+                    element.state = element.state == enums::state::alive ? enums::state::init : element.state;
                 });
             }
         } else {
@@ -356,27 +343,25 @@ protected:
         auto iterable = players.get_players();
         return std::accumulate(
                         iterable.cbegin(), iterable.cend(), 0, [&](int value, auto const &element) -> int {
-                            return element.state != enums::state_t::out ? value + 1 : value;
+                            return element.state != enums::state::out ? value + 1 : value;
                         });
     }
 
     [[nodiscard]] auto get_actionable() const -> int {
         auto iterable = players.get_players();
-        return std::accumulate(
-                        iterable.cbegin(), iterable.cend(), 0, [&](int value, auto const &element) -> int {
-                            return (element.state == enums::state_t::init ||
-                                    (element.state == enums::state_t::alive &&
-                                     element.round_bet < pot.get_round_highest_bet())) ?
-                                            value + 1 :
-                                            value;
-                        });
+        return std::accumulate(iterable.cbegin(), iterable.cend(), 0, [&](int value, auto const &element) -> int {
+            return (element.state == enums::state::init ||
+                    (element.state == enums::state::alive && element.round_bet < pot.get_round_highest_bet())) ?
+                            value + 1 :
+                            value;
+        });
     }
 
     [[nodiscard]] auto get_future_actionable() const -> int {
         auto iterable = players.get_players();
         return std::accumulate(iterable.cbegin(), iterable.cend(), 0, [&](int value, auto const &element) -> int {
-            return element.state != enums::state_t::out && element.state != enums::state_t::allin ? value + 1 :
-                                                                                                    value;
+            return element.state != enums::state::out && element.state != enums::state::allin ? value + 1 :
+                                                                                                value;
         });
     }
 

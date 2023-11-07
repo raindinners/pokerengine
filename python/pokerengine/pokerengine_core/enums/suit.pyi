@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from enum import Enum
 
-class SuitEnum(Enum):
+class SuitE(Enum):
     CLUBS = 0
     DIAMONDS = 1
     HEARTS = 2

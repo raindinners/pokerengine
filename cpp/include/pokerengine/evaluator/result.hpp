@@ -11,6 +11,7 @@
 
 #include "bits.hpp"
 #include "card/card.hpp"
+#include "enums.hpp"
 #include "pokerengine.hpp"
 
 namespace pokerengine {
@@ -24,23 +25,10 @@ const std::array< const char *, 9 > COMBINATIONS = {
     "a flush,",   "a full house,", "four of a kind,", "a straight flush,"
 };
 } // namespace constants
-namespace enums {
-enum class combination_t : uint8_t {
-    no_pair = 0,
-    one_pair = 1,
-    two_pair = 2,
-    three_of_a_kind = 3,
-    straight = 4,
-    flush = 5,
-    full_house = 6,
-    four_of_a_kind = 7,
-    straight_flush = 8,
-};
-} // namespace enums
 
 class result {
 public:
-    result(enums::combination_t type, uint8_t major, uint8_t minor, uint16_t kickers) noexcept
+    result(enums::combination type, uint8_t major, uint8_t minor, uint16_t kickers) noexcept
             : result_{ static_cast< uint32_t >(
                               (static_cast< uint8_t >(type) << constants::OFFSET_TYPE) |
                               (major << constants::OFFSET_MAJOR) | (minor << constants::OFFSET_MINOR) |
@@ -82,41 +70,41 @@ public:
     }
 
     [[nodiscard]] auto as_string() const -> std::string {
-        auto result = enums::combination_t{ type() };
+        auto result = enums::combination{ type() };
         auto index = static_cast< uint8_t >(result);
 
         switch (result) {
-        case enums::combination_t::no_pair: {
+        case enums::combination::no_pair: {
             return std::string{ constants::COMBINATIONS[index] } + std::string{ " " } +
                             std::string{
                                 rank{ enums::rank_t{ bits::cross_idx_high16(kickers()) } }.as_string_long()
                             };
         }
-        case enums::combination_t::one_pair:
-        case enums::combination_t::three_of_a_kind: {
+        case enums::combination::one_pair:
+        case enums::combination::three_of_a_kind: {
             return std::string{ constants::COMBINATIONS[index] } + std::string{ " " } +
                             major_rank().as_string_long();
         }
-        case enums::combination_t::four_of_a_kind: {
+        case enums::combination::four_of_a_kind: {
             return std::string{ constants::COMBINATIONS[index] } + std::string{ " " } +
                             major_rank().as_string_long();
         }
-        case enums::combination_t::two_pair: {
+        case enums::combination::two_pair: {
             return std::string{ constants::COMBINATIONS[index] } + std::string{ " " } +
                             major_rank().as_string_long() + std::string{ " and " } +
                             minor_rank().as_string_long();
         }
-        case enums::combination_t::full_house: {
+        case enums::combination::full_house: {
             return std::string{ constants::COMBINATIONS[index] } + std::string{ " " } +
                             major_rank().as_string_long() + std::string{ " full of " } +
                             minor_rank().as_string_long();
         }
-        case enums::combination_t::straight:
-        case enums::combination_t::straight_flush: {
+        case enums::combination::straight:
+        case enums::combination::straight_flush: {
             return std::string{ constants::COMBINATIONS[index] } + std::string{ " " } +
                             std::string{ major_rank().as_string_long() } + std::string{ " high" };
         }
-        case enums::combination_t::flush: {
+        case enums::combination::flush: {
             return std::string{ constants::COMBINATIONS[index] } + std::string{ " " } +
                             std::string{
                                 rank{ enums::rank_t{ bits::cross_idx_high16(kickers()) } }.as_string_long()
@@ -130,15 +118,15 @@ public:
     }
 
     [[nodiscard, maybe_unused]] auto as_string_long() const -> std::string {
-        auto result = enums::combination_t(type());
+        auto result = enums::combination(type());
 
         switch (result) {
-        case enums::combination_t::no_pair:
-        case enums::combination_t::one_pair:
-        case enums::combination_t::three_of_a_kind:
-        case enums::combination_t::four_of_a_kind:
-        case enums::combination_t::two_pair:
-        case enums::combination_t::flush: {
+        case enums::combination::no_pair:
+        case enums::combination::one_pair:
+        case enums::combination::three_of_a_kind:
+        case enums::combination::four_of_a_kind:
+        case enums::combination::two_pair:
+        case enums::combination::flush: {
             return as_string() + ", kicker(s): " + str_kickers();
         }
         default: {

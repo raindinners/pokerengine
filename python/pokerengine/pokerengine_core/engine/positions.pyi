@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 from pokerengine.pokerengine_core.engine.player import Player, Players
-from pokerengine.pokerengine_core.enums.position import PositionEnum
+from pokerengine.pokerengine_core.enums.position import PositionE
 
 class Positions:
-    current: PositionEnum = PositionEnum.NO_POSITION
+    current: PositionE = PositionE.NO_POSITION
 
     def __init__(self, players: Players) -> None: ...
     @property

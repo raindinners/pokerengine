@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-class CombinationEnum:
+from enum import Enum
+
+class CombinationE(Enum):
     NO_PAIR = 0
     ONE_PAIR = 1
     TWO_PAIR = 2

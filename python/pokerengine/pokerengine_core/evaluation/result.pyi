@@ -3,13 +3,13 @@ from __future__ import annotations
 from typing import overload
 
 from pokerengine.pokerengine_core.card.card import Rank
-from pokerengine.pokerengine_core.enums.combination import CombinationEnum
+from pokerengine.pokerengine_core.enums.combination import CombinationE
 
 class Result:
     @overload
     def __init__(
         self,
-        type: CombinationEnum,
+        type: CombinationE,
         major: int,
         minor: int,
         kickers: int,

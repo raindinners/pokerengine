@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-from pokerengine.pokerengine_core.enums.round import RoundEnum
+from pokerengine.pokerengine_core.enums.round import RoundE
 
 class Round:
     flop_dealt: bool
-    round: RoundEnum
+    round: RoundE
 
-    def __init__(self, round: RoundEnum = RoundEnum.PREFLOP, flop_dealt: bool = False) -> None: ...
+    def __init__(self, round: RoundE = RoundE.PREFLOP, flop_dealt: bool = False) -> None: ...
     def set_next_game(self) -> None: ...
     def set_next_round(self) -> None: ...

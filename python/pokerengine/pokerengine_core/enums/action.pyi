@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from enum import Enum
 
-class ActionEnum(Enum):
+class ActionE(Enum):
     FOLD = 0
     CHECK = 1
     CALL = 2

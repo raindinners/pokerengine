@@ -6,8 +6,8 @@ from pokerengine.pokerengine_core.engine.player import Players
 from pokerengine.pokerengine_core.engine.positions import Positions
 from pokerengine.pokerengine_core.engine.pot import PotRake01
 from pokerengine.pokerengine_core.engine.round import Round
-from pokerengine.pokerengine_core.enums.action import ActionEnum
-from pokerengine.pokerengine_core.enums.position import PositionEnum
+from pokerengine.pokerengine_core.enums.action import ActionE
+from pokerengine.pokerengine_core.enums.position import PositionE
 
 class EngineTraits:
     sb_bet: int
@@ -39,13 +39,13 @@ class EngineRake01:
 
 class PlayerAction:
     amount: int
-    action: ActionEnum
-    position: PositionEnum
+    action: ActionE
+    position: PositionE
 
     def __init__(
         self,
         amount: int,
-        action: ActionEnum,
-        position: PositionEnum,
+        action: ActionE,
+        position: PositionE,
     ) -> None: ...
     def __eq__(self, other: PlayerAction) -> bool: ...

@@ -10,18 +10,10 @@
 #include <stdexcept>
 #include <vector>
 
+#include "enums.hpp"
 #include "pokerengine.hpp"
 
 namespace pokerengine {
-namespace enums {
-enum class state_t {
-    init = 0,
-    out = 1,
-    alive = 2,
-    allin = 3,
-};
-} // namespace enums
-
 struct player {
     bool is_left = false;
 
@@ -30,7 +22,7 @@ struct player {
     int32_t front;
     int32_t round_bet;
 
-    enums::state_t state;
+    enums::state state;
 
     auto operator<=>(const player &other) const noexcept -> std::strong_ordering = delete;
     auto operator==(const player &other) const noexcept -> bool = default;
@@ -52,7 +44,7 @@ public:
         players_ = players;
     }
 
-    auto add_player(int32_t stack, enums::state_t state = enums::state_t::init) -> void {
+    auto add_player(int32_t stack, enums::state state = enums::state::init) -> void {
         players_.emplace_back(false, stack, 0, 0, 0, state);
     }
 

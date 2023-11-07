@@ -12,6 +12,7 @@
 #include "card/cards.hpp"
 #include "engine/player.hpp"
 #include "engine/positions.hpp"
+#include "enums.hpp"
 #include "evaluator/evaluation_result.hpp"
 #include "pokerengine.hpp"
 #include "vector.hpp"
@@ -28,7 +29,7 @@ const float RAKE_MULTI = 1.0f - RAKE< A, B >;
 
 namespace v1 {
 auto get_chips_to_return(const std::vector< player > &players, int32_t highest_bet)
-                -> std::pair< enums::position_t, int32_t > {
+                -> std::pair< enums::position, int32_t > {
     if (std::count_if(players.cbegin(), players.cend(), [&](const auto &element) -> bool {
             return element.front == highest_bet;
         }) < 2) {
@@ -45,9 +46,9 @@ auto get_chips_to_return(const std::vector< player > &players, int32_t highest_b
                         }));
 
         std::sort(chips_front.begin(), chips_front.end(), std::greater{});
-        return std::make_pair(enums::position_t(position), highest_bet - chips_front[1]);
+        return std::make_pair(enums::position(position), highest_bet - chips_front[1]);
     } else {
-        return std::make_pair(enums::position_t{ 0 }, 0);
+        return std::make_pair(enums::position{ 0 }, 0);
     }
 }
 
@@ -82,11 +83,11 @@ auto get_all_pots(const std::vector< player > &players, int32_t highest_bet)
 
     int32_t upper = chips_and_players[0].first;
     std::for_each(chips_and_players.cbegin(), chips_and_players.cend(), [&](const auto &pair) -> void {
-        if (players[pair.second].state == enums::state_t::out) {
+        if (players[pair.second].state == enums::state::out) {
             return;
         } else if (int32_t lower = chips_front[pair.second]; lower == upper) {
             main_pot_players.push_back(pair.second);
-        } else if (players[pair.second].state == enums::state_t::allin) {
+        } else if (players[pair.second].state == enums::state::allin) {
             pots.emplace_back(main_pot_players, upper, lower);
             upper = lower;
             main_pot_players.push_back(pair.second);
@@ -233,7 +234,7 @@ public:
         auto winner = std::distance(
                         iterable.cbegin(),
                         std::find_if(iterable.cbegin(), iterable.cend(), [](const auto &element) {
-                            return element.state != enums::state_t::out;
+                            return element.state != enums::state::out;
                         }));
 
         std::vector< int32_t > results;

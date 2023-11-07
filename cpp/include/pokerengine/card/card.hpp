@@ -17,6 +17,7 @@
 #include <type_traits>
 #include <utility>
 
+#include "enums.hpp"
 #include "pokerengine.hpp"
 #include "types.hpp"
 
@@ -39,31 +40,6 @@ const std::string CARDS_STRING =
 
 const uint64_t CARD_SET_FULL = 0xFFFFFFFFFFFFFFFF >> (64 - DECK_SIZE);
 } // namespace constants
-
-namespace enums {
-enum class rank_t : uint8_t {
-    two = 0,
-    three = 1,
-    four = 2,
-    five = 3,
-    six = 4,
-    seven = 5,
-    eight = 6,
-    nine = 7,
-    ten = 8,
-    jack = 9,
-    queen = 10,
-    king = 11,
-    ace = 12,
-};
-
-enum class suit_t : uint8_t {
-    clubs = 0,
-    diamonds = 1,
-    hearts = 2,
-    spades = 3,
-};
-} // namespace enums
 
 template < typename T >
 concept BitSetType = std::numeric_limits< T >::is_integer;
@@ -115,56 +91,56 @@ private:
 };
 } // namespace abc
 
-using rank_abc = abc::representation_abc< enums::rank_t, uint8_t, uint16_t >;
+using rank_abc = abc::representation_abc< enums::rank, uint8_t, uint16_t >;
 class rank : public rank_abc {
 public:
-    using abc::representation_abc< enums::rank_t, uint8_t, uint16_t >::representation_abc;
+    using abc::representation_abc< enums::rank, uint8_t, uint16_t >::representation_abc;
 
     explicit rank(char value)
-            : abc::representation_abc< enums::rank_t, uint8_t, uint16_t >{ from_char(value) } {
+            : abc::representation_abc< enums::rank, uint8_t, uint16_t >{ from_char(value) } {
     }
 
     [[nodiscard]] auto as_string_long() const -> std::string override {
-        auto value = static_cast< enums::rank_t >(get_value());
+        auto value = static_cast< enums::rank >(get_value());
 
         switch (value) {
-        case enums::rank_t::two: {
+        case enums::rank::two: {
             return "Two";
         }
-        case enums::rank_t::three: {
+        case enums::rank::three: {
             return "Three";
         }
-        case enums::rank_t::four: {
+        case enums::rank::four: {
             return "Four";
         }
-        case enums::rank_t::five: {
+        case enums::rank::five: {
             return "Five";
         }
-        case enums::rank_t::six: {
+        case enums::rank::six: {
             return "Six";
         }
-        case enums::rank_t::seven: {
+        case enums::rank::seven: {
             return "Seven";
         }
-        case enums::rank_t::eight: {
+        case enums::rank::eight: {
             return "Eight";
         }
-        case enums::rank_t::nine: {
+        case enums::rank::nine: {
             return "Nine";
         }
-        case enums::rank_t::ten: {
+        case enums::rank::ten: {
             return "Ten";
         }
-        case enums::rank_t::jack: {
+        case enums::rank::jack: {
             return "Jack";
         }
-        case enums::rank_t::queen: {
+        case enums::rank::queen: {
             return "Queen";
         }
-        case enums::rank_t::king: {
+        case enums::rank::king: {
             return "King";
         }
-        case enums::rank_t::ace: {
+        case enums::rank::ace: {
             return "Ace";
         }
         default: {
@@ -174,131 +150,131 @@ public:
     }
 
 protected:
-    [[nodiscard]] auto from_char(char value) -> enums::rank_t override {
+    [[nodiscard]] auto from_char(char value) -> enums::rank override {
         switch (value) {
         case '2': {
-            return enums::rank_t::two;
+            return enums::rank::two;
         }
         case '3': {
-            return enums::rank_t::three;
+            return enums::rank::three;
         }
         case '4': {
-            return enums::rank_t::four;
+            return enums::rank::four;
         }
         case '5': {
-            return enums::rank_t::five;
+            return enums::rank::five;
         }
         case '6': {
-            return enums::rank_t::six;
+            return enums::rank::six;
         }
         case '7': {
-            return enums::rank_t::seven;
+            return enums::rank::seven;
         }
         case '8': {
-            return enums::rank_t::eight;
+            return enums::rank::eight;
         }
         case '9': {
-            return enums::rank_t::nine;
+            return enums::rank::nine;
         }
         case 'T':
         case 't': {
-            return enums::rank_t::ten;
+            return enums::rank::ten;
         }
         case 'J':
         case 'j': {
-            return enums::rank_t::jack;
+            return enums::rank::jack;
         }
         case 'Q':
         case 'q': {
-            return enums::rank_t::queen;
+            return enums::rank::queen;
         }
         case 'K':
         case 'k': {
-            return enums::rank_t::king;
+            return enums::rank::king;
         }
         case 'A':
         case 'a': {
-            return enums::rank_t::ace;
+            return enums::rank::ace;
         }
         default: {
-            return abc::representation_abc< enums::rank_t, uint8_t, uint16_t >::from_char(value);
+            return abc::representation_abc< enums::rank, uint8_t, uint16_t >::from_char(value);
         }
         }
     }
 
     [[nodiscard]] auto to_char() const -> char override {
-        auto value = static_cast< enums::rank_t >(get_value());
+        auto value = static_cast< enums::rank >(get_value());
 
         switch (value) {
-        case enums::rank_t::two: {
+        case enums::rank::two: {
             return '2';
         }
-        case enums::rank_t::three: {
+        case enums::rank::three: {
             return '3';
         }
-        case enums::rank_t::four: {
+        case enums::rank::four: {
             return '4';
         }
-        case enums::rank_t::five: {
+        case enums::rank::five: {
             return '5';
         }
-        case enums::rank_t::six: {
+        case enums::rank::six: {
             return '6';
         }
-        case enums::rank_t::seven: {
+        case enums::rank::seven: {
             return '7';
         }
-        case enums::rank_t::eight: {
+        case enums::rank::eight: {
             return '8';
         }
-        case enums::rank_t::nine: {
+        case enums::rank::nine: {
             return '9';
         }
-        case enums::rank_t::ten: {
+        case enums::rank::ten: {
             return 'T';
         }
-        case enums::rank_t::jack: {
+        case enums::rank::jack: {
             return 'J';
         }
-        case enums::rank_t::queen: {
+        case enums::rank::queen: {
             return 'Q';
         }
-        case enums::rank_t::king: {
+        case enums::rank::king: {
             return 'K';
         }
-        case enums::rank_t::ace: {
+        case enums::rank::ace: {
             return 'A';
         }
         default: {
-            return abc::representation_abc< enums::rank_t, uint8_t, uint16_t >::to_char();
+            return abc::representation_abc< enums::rank, uint8_t, uint16_t >::to_char();
         }
         }
     }
 };
 
-using suit_abc = abc::representation_abc< enums::suit_t, uint8_t, uint16_t >;
+using suit_abc = abc::representation_abc< enums::suit, uint8_t, uint16_t >;
 class suit : public suit_abc {
 public:
-    using abc::representation_abc< enums::suit_t, uint8_t, uint16_t >::representation_abc;
+    using abc::representation_abc< enums::suit, uint8_t, uint16_t >::representation_abc;
 
     explicit suit(char value)
-            : abc::representation_abc< enums::suit_t, uint8_t, uint16_t >{ from_char(value) } {
+            : abc::representation_abc< enums::suit, uint8_t, uint16_t >{ from_char(value) } {
     }
 
     [[nodiscard, maybe_unused]] auto as_string_pretty() const -> std::string {
-        auto value = static_cast< enums::suit_t >(get_value());
+        auto value = static_cast< enums::suit >(get_value());
 
         switch (value) {
-        case enums::suit_t::clubs: {
+        case enums::suit::clubs: {
             return "♣";
         }
-        case enums::suit_t::diamonds: {
+        case enums::suit::diamonds: {
             return "♦️";
         }
-        case enums::suit_t::hearts: {
+        case enums::suit::hearts: {
             return "❤️";
         }
-        case enums::suit_t::spades: {
+        case enums::suit::spades: {
             return "♠️";
         }
         default: {
@@ -308,19 +284,19 @@ public:
     }
 
     [[nodiscard]] auto as_string_long() const -> std::string override {
-        auto value = static_cast< enums::suit_t >(get_value());
+        auto value = static_cast< enums::suit >(get_value());
 
         switch (value) {
-        case enums::suit_t::clubs: {
+        case enums::suit::clubs: {
             return "Clubs";
         }
-        case enums::suit_t::diamonds: {
+        case enums::suit::diamonds: {
             return "Diamonds";
         }
-        case enums::suit_t::hearts: {
+        case enums::suit::hearts: {
             return "Hearts";
         }
-        case enums::suit_t::spades: {
+        case enums::suit::spades: {
             return "Spades";
         }
         default: {
@@ -330,48 +306,48 @@ public:
     }
 
 protected:
-    [[nodiscard]] auto from_char(char value) -> enums::suit_t override {
+    [[nodiscard]] auto from_char(char value) -> enums::suit override {
         switch (value) {
         case 'C':
         case 'c': {
-            return enums::suit_t::clubs;
+            return enums::suit::clubs;
         }
         case 'D':
         case 'd': {
-            return enums::suit_t::diamonds;
+            return enums::suit::diamonds;
         }
         case 'H':
         case 'h': {
-            return enums::suit_t::hearts;
+            return enums::suit::hearts;
         }
         case 'S':
         case 's': {
-            return enums::suit_t::spades;
+            return enums::suit::spades;
         }
         default: {
-            return abc::representation_abc< enums::suit_t, uint8_t, uint16_t >::from_char(value);
+            return abc::representation_abc< enums::suit, uint8_t, uint16_t >::from_char(value);
         }
         };
     }
 
     [[nodiscard]] auto to_char() const -> char override {
-        auto value = static_cast< enums::suit_t >(get_value());
+        auto value = static_cast< enums::suit >(get_value());
 
         switch (value) {
-        case enums::suit_t::clubs: {
+        case enums::suit::clubs: {
             return 'c';
         }
-        case enums::suit_t::diamonds: {
+        case enums::suit::diamonds: {
             return 'd';
         }
-        case enums::suit_t::hearts: {
+        case enums::suit::hearts: {
             return 'h';
         }
-        case enums::suit_t::spades: {
+        case enums::suit::spades: {
             return 's';
         }
         default: {
-            return abc::representation_abc< enums::suit_t, uint8_t, uint16_t >::to_char();
+            return abc::representation_abc< enums::suit, uint8_t, uint16_t >::to_char();
         }
         }
     }
@@ -386,8 +362,7 @@ public:
                               rank_value.get_value() + (suit_value.get_value() * constants::RANKS)) } {
     }
 
-    card(enums::rank_t rank_value, enums::suit_t suit_value)
-            : card{ rank{ rank_value }, suit{ suit_value } } {
+    card(enums::rank rank_value, enums::suit suit_value) : card{ rank{ rank_value }, suit{ suit_value } } {
     }
 
     explicit card(uint8_t value) : card_{ value } {
@@ -425,11 +400,11 @@ public:
     }
 
     [[nodiscard, maybe_unused]] auto get_rank() const noexcept -> rank {
-        return rank{ enums::rank_t(uint8_t(card_ % constants::RANKS)) };
+        return rank{ enums::rank(uint8_t(card_ % constants::RANKS)) };
     }
 
     [[nodiscard, maybe_unused]] auto get_suit() const noexcept -> suit {
-        return suit{ enums::suit_t(uint8_t(card_ / constants::RANKS)) };
+        return suit{ enums::suit(uint8_t(card_ / constants::RANKS)) };
     }
 
 private:
@@ -531,8 +506,8 @@ public:
     }
 
     [[nodiscard]] auto generate() -> card {
-        return card{ rank{ enums::rank_t{ uint8_t(dist_rank_(rng_)) } },
-                     suit{ enums::suit_t{ static_cast< uint8_t >(dist_suit_(rng_)) } } };
+        return card{ rank{ enums::rank{ uint8_t(dist_rank_(rng_)) } },
+                     suit{ enums::suit{ static_cast< uint8_t >(dist_suit_(rng_)) } } };
     }
 
     [[nodiscard]] auto generate_v(uint8_t n) -> std::vector< card > {

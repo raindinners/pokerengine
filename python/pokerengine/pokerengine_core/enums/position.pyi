@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from enum import Enum
 
-class PositionEnum(Enum):
+class PositionE(Enum):
     SB = 0
     BB = 1
     UTG = 2

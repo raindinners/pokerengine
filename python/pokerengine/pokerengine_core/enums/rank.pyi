@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from enum import Enum
 
-class RankEnum(Enum):
+class RankE(Enum):
     TWO = 0
     THREE = 1
     FOUR = 2
