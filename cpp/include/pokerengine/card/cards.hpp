@@ -15,13 +15,10 @@
 
 #include "card/card.hpp"
 #include "card/hand.hpp"
+#include "constants.hpp"
 #include "pokerengine.hpp"
 
 namespace pokerengine {
-namespace constants {
-uint8_t BOARD_SIZE = 5;
-} // namespace constants
-
 class cards {
 public:
     cards() = delete;

@@ -17,7 +17,7 @@ auto setup_pyengine(py::module_ &module_) -> void {
     auto engine = module_.def_submodule("engine");
 
     py::class_< pokerengine::player_action >(engine, "PlayerAction", py::module_local())
-                    .def(py::init< int32_t, pokerengine::enums::action_t, pokerengine::enums::position_t >(),
+                    .def(py::init< int32_t, pokerengine::enums::action, pokerengine::enums::position >(),
                          py::arg("amount"),
                          py::arg("amount"),
                          py::arg("position"))
