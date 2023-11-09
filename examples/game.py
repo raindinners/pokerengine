@@ -6,21 +6,21 @@ from argparse import ArgumentParser, Namespace
 
 from pokerengine.card import CardGenerator, Cards
 from pokerengine.engine import EngineRake01, EngineTraits
-from pokerengine.enums import ActionEnum, PositionEnum, RoundEnum, StateEnum
+from pokerengine.enums import ActionE, PositionE, RoundE, StateE
 
 
 class GameEndedError(Exception):
     ...
 
 
-def get_board_cards_to_print(round: RoundEnum) -> int:  # noqa
-    if round == RoundEnum.PREFLOP:
+def get_board_cards_to_print(round: RoundE) -> int:  # noqa
+    if round == RoundE.PREFLOP:
         return 0
-    if round == RoundEnum.FLOP:
+    if round == RoundE.FLOP:
         return 3
-    if round == RoundEnum.TURN:
+    if round == RoundE.TURN:
         return 4
-    if round == RoundEnum.RIVER:
+    if round == RoundE.RIVER:
         return 5
 
     return 5  # Showdown
@@ -44,11 +44,11 @@ def core(engine: EngineRake01, cards: Cards) -> None:
     print(
         "The active player is:",
         engine.positions_manager.current.name,
-        "(bot)" if engine.positions_manager.current != PositionEnum.SB else "(this is you)",
+        "(bot)" if engine.positions_manager.current != PositionE.SB else "(this is you)",
     )
 
-    if engine.positions_manager.current == PositionEnum.SB:
-        print("Your cards are:", cards.hands[PositionEnum.SB.value].as_string())
+    if engine.positions_manager.current == PositionE.SB:
+        print("Your cards are:", cards.hands[PositionE.SB.value].as_string())
 
         board_cards_to_print = get_board_cards_to_print(engine.round_manager.round)
         if not board_cards_to_print:
@@ -74,7 +74,7 @@ def core(engine: EngineRake01, cards: Cards) -> None:
                 print("Invalid action")
                 continue
 
-            if action.action == ActionEnum.RAISE:
+            if action.action == ActionE.RAISE:
                 try:
                     amount = int(
                         input(f"Enter amount from {engine.traits.min_raise} to {action.amount}: ")
@@ -90,7 +90,7 @@ def core(engine: EngineRake01, cards: Cards) -> None:
 
     else:
         action = random.choice(engine.actions)
-        if action.action != ActionEnum.NO_ACTION:
+        if action.action != ActionE.NO_ACTION:
             print("Opponent action", action.action.name, "amount", action.amount)
 
             time.sleep(4)
@@ -127,7 +127,7 @@ def __main__(args: Namespace) -> None:
     card_generator = CardGenerator(seed=random.randint(0, 10000))
 
     for _ in range(args.players):
-        engine.players_manager.add_player(20000, state=StateEnum.INIT)
+        engine.players_manager.add_player(20000, state=StateE.INIT)
 
     engine.start(False)
 
