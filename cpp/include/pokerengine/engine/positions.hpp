@@ -10,18 +10,13 @@
 #include <numeric>
 #include <string>
 
+#include "constants.hpp"
 #include "engine/player.hpp"
 #include "engine/round.hpp"
 #include "enums.hpp"
 #include "pokerengine.hpp"
 #include "utils.hpp"
-
 namespace pokerengine {
-namespace constants {
-uint8_t MIN_PLAYERS = 2;
-uint8_t MAX_PLAYERS = 7;
-} // namespace constants
-
 namespace v1 {
 auto get_players(const std::vector< player > &players, bool rotate = false) -> std::vector< player > {
     std::vector< player > result;

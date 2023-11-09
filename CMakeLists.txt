@@ -30,6 +30,7 @@ set(HEADER_FILES
         ${CPP_INCLUDE_DIR}/pokerengine/engine/positions.hpp
         ${CPP_INCLUDE_DIR}/pokerengine/engine/pot.hpp
         ${CPP_INCLUDE_DIR}/pokerengine/engine/round.hpp
+        ${CPP_INCLUDE_DIR}/pokerengine/constants.hpp
         ${CPP_INCLUDE_DIR}/pokerengine/enums.hpp
         ${CPP_INCLUDE_DIR}/pokerengine/pokerengine.hpp
         ${CPP_INCLUDE_DIR}/pokerengine/types.hpp
@@ -41,14 +42,14 @@ set(PYTHON_HEADERS
         ${PYTHON_DIR}/pycard/pycard__init__.hpp
         ${PYTHON_DIR}/pycard/pycards.hpp
         ${PYTHON_DIR}/pycard/pyhand.hpp
+        ${PYTHON_DIR}/pyconstants.hpp
         ${PYTHON_DIR}/pyengine/pyengine.hpp
         ${PYTHON_DIR}/pyengine/pyengine__init__.hpp
         ${PYTHON_DIR}/pyengine/pyplayer.hpp
         ${PYTHON_DIR}/pyengine/pypositions.hpp
         ${PYTHON_DIR}/pyengine/pypot.hpp
         ${PYTHON_DIR}/pyengine/pyround.hpp
-        ${PYTHON_DIR}/pyenums/pyenums.hpp
-        ${PYTHON_DIR}/pyenums/pyenums__init__.hpp
+        ${PYTHON_DIR}/pyenums.hpp
         ${PYTHON_DIR}/pyevaluation/pyevaluation__init__.hpp
         ${PYTHON_DIR}/pyevaluation/pyevaluation_result.hpp
         ${PYTHON_DIR}/pyevaluation/pyresult.hpp

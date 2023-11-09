@@ -17,30 +17,12 @@
 #include <type_traits>
 #include <utility>
 
+#include "constants.hpp"
 #include "enums.hpp"
 #include "pokerengine.hpp"
 #include "types.hpp"
 
 namespace pokerengine {
-namespace constants {
-const uint8_t MASK_RANKS_NUMBER = 0b0000'1111;
-const uint16_t MASK_RANKS = 0b0001'1111'1111'1111;
-
-const uint8_t RANKS = 13;
-const uint8_t SUITS = 4;
-
-const uint8_t DECK_SIZE = RANKS * SUITS;
-
-const uint8_t CARD_INDEX_MIN = 0;
-const uint8_t CARD_INDEX_MAX = DECK_SIZE - 1;
-
-const std::string CARDS_STRING =
-                "2c3c4c5c6c7c8c9cTcJcQcKcAc2d3d4d5d6d7d8d9dTdJdQdKdAd2h3h4h5h6h7h8h9hThJhQh"
-                "KhAh2s3s4s5s6s7s8s9sTsJsQsKsAs";
-
-const uint64_t CARD_SET_FULL = 0xFFFFFFFFFFFFFFFF >> (64 - DECK_SIZE);
-} // namespace constants
-
 template < typename T >
 concept BitSetType = std::numeric_limits< T >::is_integer;
 

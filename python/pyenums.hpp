@@ -5,11 +5,7 @@
 #ifndef POKERENGINE_PYENUMS_HPP
 #define POKERENGINE_PYENUMS_HPP
 
-#include "card/card.hpp"
-#include "engine/engine.hpp"
-#include "engine/player.hpp"
-#include "engine/round.hpp"
-#include "evaluator/result.hpp"
+#include "enums.hpp"
 
 #include "python.hpp"
 
@@ -104,6 +100,22 @@ auto setup_suit_enum(py::module_ &module_) -> void {
                     .value("DIAMONDS", pokerengine::enums::suit ::diamonds)
                     .value("HEARTS", pokerengine::enums::suit ::hearts)
                     .value("SPADES", pokerengine::enums::suit ::spades);
+}
+
+auto setup_enums_all(py::module_ &module_) -> void {
+    auto enums = module_.def_submodule("enums");
+
+    setup_action_enum(enums);
+    setup_combination_enum(enums);
+    setup_position_enum(enums);
+    setup_rank_enum(enums);
+    setup_round_enum(enums);
+    setup_state_enum(enums);
+    setup_suit_enum(enums);
+}
+
+auto setup_pyenums_main(py::module_ &module_) -> void {
+    setup_enums_all(module_);
 }
 } // namespace python
 

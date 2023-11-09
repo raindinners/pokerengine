@@ -16,7 +16,7 @@ auto setup_pyresult(py::module_ &module_) -> void {
     auto result = module_.def_submodule("result");
 
     py::class_< pokerengine::result >(result, "Result", py::module_local())
-                    .def(py::init< pokerengine::enums::combination_t, uint8_t, uint8_t, uint16_t >(),
+                    .def(py::init< pokerengine::enums::combination, uint8_t, uint8_t, uint16_t >(),
                          py::arg("type"),
                          py::arg("major"),
                          py::arg("minor"),
