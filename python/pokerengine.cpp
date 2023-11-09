@@ -7,8 +7,9 @@
 #include "card/card.hpp"
 
 #include "pycard/pycard__init__.hpp"
+#include "pyconstants.hpp"
 #include "pyengine/pyengine__init__.hpp"
-#include "pyenums/pyenums__init__.hpp"
+#include "pyenums.hpp"
 #include "pyevaluation/pyevaluation__init__.hpp"
 #include "pyutils.hpp"
 
@@ -17,6 +18,7 @@
 
 namespace python {
 auto setup_all(py::module_ &module_) -> void {
+    setup_pyconstants_main(module_);
     setup_pyenums_main(module_);
     setup_pycard_main(module_);
     setup_pyevaluation_main(module_);

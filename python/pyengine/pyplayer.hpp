@@ -17,7 +17,7 @@ auto setup_pyplayer(py::module_ &module_) -> void {
     auto player = module_.def_submodule("player");
 
     py::class_< pokerengine::player >(player, "Player", py::module_local())
-                    .def(py::init< bool, int32_t, int32_t, int32_t, int32_t, pokerengine::enums::state_t >(),
+                    .def(py::init< bool, int32_t, int32_t, int32_t, int32_t, pokerengine::enums::state >(),
                          py::arg("is_left"),
                          py::arg("stack"),
                          py::arg("behind"),
@@ -38,7 +38,7 @@ auto setup_pyplayer(py::module_ &module_) -> void {
                     .def("add_player",
                          &pokerengine::players_set::add_player,
                          py::arg("stack"),
-                         py::arg("state") = pokerengine::enums::state_t::init)
+                         py::arg("state") = pokerengine::enums::state::init)
                     .def("remove_player", &pokerengine::players_set::remove_player, py::arg("index"))
                     .def_property_readonly("players", &pokerengine::players_set::get_players);
 }

@@ -21,6 +21,7 @@
 #include <vector>
 
 #include "card/cards.hpp"
+#include "constants.hpp"
 #include "engine/player.hpp"
 #include "engine/positions.hpp"
 #include "engine/pot.hpp"
@@ -214,7 +215,6 @@ private:
     int32_t min_raise_;
 };
 
-
 template < uint8_t A = 0, uint8_t B = 1 >
     requires(A >= 0 && B > 0 && A < B)
 class engine {
@@ -247,7 +247,7 @@ public:
 
     auto stop() -> void {
         engine_traits_.set_min_raise(engine_traits_.get_bb_bet());
-        round.set_next_game();
+        round.reset();
     }
 
     [[nodiscard]] auto in_terminal_state() const noexcept -> bool {
@@ -319,7 +319,8 @@ public:
                 positions.set_next_round_player();
 
                 engine_traits_.set_min_raise(engine_traits_.get_bb_bet());
-                round.set_next_round();
+                auto next_round = actual::get_next_round(round.get_round());
+                round.set_round(std::get< 0 >(next_round)), round.set_flop_dealt(std::get< 1 >(next_round));
 
                 std::for_each(iterable.begin(), iterable.end(), [](auto &element) {
                     element.round_bet = 0;

@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "card/cards.hpp"
+#include "constants.hpp"
 #include "engine/player.hpp"
 #include "engine/positions.hpp"
 #include "enums.hpp"
@@ -18,15 +19,6 @@
 #include "vector.hpp"
 
 namespace pokerengine {
-namespace constants {
-template < size_t A = 0, size_t B = 1 >
-    requires(A >= 0 && B > 0 && A < B)
-const float RAKE = 1.0f * A / B;
-template < size_t A = 0, size_t B = 1 >
-    requires(A >= 0 && B > 0 && A < B)
-const float RAKE_MULTI = 1.0f - RAKE< A, B >;
-} // namespace constants
-
 namespace v1 {
 auto get_chips_to_return(const std::vector< player > &players, int32_t highest_bet)
                 -> std::pair< enums::position, int32_t > {

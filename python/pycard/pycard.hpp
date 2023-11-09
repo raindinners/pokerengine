@@ -19,7 +19,7 @@ auto setup_pycard(py::module_ &module_) -> void {
 
     py::class_< pokerengine::rank_abc >(card, "_RankRepresentationABC", py::module_local()); // NOLINT
     py::class_< pokerengine::rank, pokerengine::rank_abc >(card, "Rank", py::module_local())
-                    .def(py::init< pokerengine::enums::rank_t >(), py::arg("value"))
+                    .def(py::init< pokerengine::enums::rank >(), py::arg("value"))
                     .def(py::init< char >(), py::arg("value"))
                     .def(py::self == py::self, py::arg("other")) // NOLINT
                     .def(py::self != py::self, py::arg("other")) // NOLINT
@@ -32,7 +32,7 @@ auto setup_pycard(py::module_ &module_) -> void {
 
     py::class_< pokerengine::suit_abc >(card, "_SuitRepresentationABC", py::module_local()); // NOLINT
     py::class_< pokerengine::suit >(card, "Suit", py::module_local())
-                    .def(py::init< pokerengine::enums::suit_t >(), py::arg("value"))
+                    .def(py::init< pokerengine::enums::suit >(), py::arg("value"))
                     .def(py::init< char >(), py::arg("value"))
                     .def(py::self == py::self, py::arg("other")) // NOLINT
                     .def(py::self != py::self, py::arg("other")) // NOLINT
@@ -48,7 +48,7 @@ auto setup_pycard(py::module_ &module_) -> void {
                     .def(py::init< const pokerengine::rank &, const pokerengine::suit & >(),
                          py::arg("rank"),
                          py::arg("suit"))
-                    .def(py::init< pokerengine::enums::rank_t, pokerengine::enums::suit_t >(),
+                    .def(py::init< pokerengine::enums::rank, pokerengine::enums::suit >(),
                          py::arg("rank"),
                          py::arg("suit"))
                     .def(py::init< uint8_t >(), py::arg("card"))

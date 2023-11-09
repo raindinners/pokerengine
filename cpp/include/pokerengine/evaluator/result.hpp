@@ -11,21 +11,11 @@
 
 #include "bits.hpp"
 #include "card/card.hpp"
+#include "constants.hpp"
 #include "enums.hpp"
 #include "pokerengine.hpp"
 
 namespace pokerengine {
-namespace constants {
-const uint8_t OFFSET_MINOR = RANKS;
-const uint8_t OFFSET_MAJOR = OFFSET_MINOR + 4;
-const uint8_t OFFSET_TYPE = OFFSET_MAJOR + 4;
-
-const std::array< const char *, 9 > COMBINATIONS = {
-    "high card,", "a pair of",     "two pairs,",      "three of a kind,", "a straight,",
-    "a flush,",   "a full house,", "four of a kind,", "a straight flush,"
-};
-} // namespace constants
-
 class result {
 public:
     result(enums::combination type, uint8_t major, uint8_t minor, uint16_t kickers) noexcept
@@ -52,12 +42,12 @@ public:
     }
 
     [[nodiscard]] auto major_rank() const noexcept -> rank {
-        return rank{ enums::rank_t(
+        return rank{ enums::rank(
                         constants::MASK_RANKS_NUMBER & ((get_result() >> constants::OFFSET_MAJOR) - 0)) };
     }
 
     [[nodiscard]] auto minor_rank() const noexcept -> rank {
-        return rank{ enums::rank_t(
+        return rank{ enums::rank(
                         constants::MASK_RANKS_NUMBER & ((get_result() >> constants::OFFSET_MINOR) - 0)) };
     }
 
@@ -77,7 +67,7 @@ public:
         case enums::combination::no_pair: {
             return std::string{ constants::COMBINATIONS[index] } + std::string{ " " } +
                             std::string{
-                                rank{ enums::rank_t{ bits::cross_idx_high16(kickers()) } }.as_string_long()
+                                rank{ enums::rank{ bits::cross_idx_high16(kickers()) } }.as_string_long()
                             };
         }
         case enums::combination::one_pair:
@@ -107,7 +97,7 @@ public:
         case enums::combination::flush: {
             return std::string{ constants::COMBINATIONS[index] } + std::string{ " " } +
                             std::string{
-                                rank{ enums::rank_t{ bits::cross_idx_high16(kickers()) } }.as_string_long()
+                                rank{ enums::rank{ bits::cross_idx_high16(kickers()) } }.as_string_long()
                             } +
                             std::string{ " high" };
         }
@@ -143,7 +133,7 @@ private:
         int8_t index = constants::RANKS;
         for (uint64_t mask = uint64_t(1) << constants::RANKS; mask; mask >>= 1, index--) {
             if (k & mask) {
-                str += std::string{ rank(static_cast< enums::rank_t >(index)).as_string_long() } + " ";
+                str += std::string{ rank(static_cast< enums::rank >(index)).as_string_long() } + " ";
             }
         }
         str.pop_back();
