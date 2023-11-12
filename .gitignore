@@ -55,3 +55,4 @@ _install
 *.egg-info
 dist
 __pycache__
+.ruff_cache
