@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import List, Sequence, overload
 
+import pybind11_stubgen.typing_ext
+import typing_extensions
 from pokerengine.pokerengine_core.enums.rank import RankE
 from pokerengine.pokerengine_core.enums.suit import SuitE
 
@@ -227,4 +229,75 @@ class CardSet:
         Use this method to join two card sets.
 
         :return: :class:`None`
+        """
+
+class Cards:
+    """
+    Represents game cards.
+    """
+
+    @overload
+    def __init__(self, board: List[str], hands: List[str]) -> None: ...
+    @overload
+    def __init__(self, cards: List[Card]) -> None: ...
+    def __eq__(self, other: Cards) -> bool: ...
+    def __gt__(self, other: Cards) -> bool: ...
+    def __lt__(self, other: Cards) -> bool: ...
+    def __ne__(self, other: Cards) -> bool: ...
+    def __str(self) -> str: ...
+    @property
+    def board(self) -> List[Card]:
+        """
+        Use this method to get game board.
+
+        :return: Game board
+        """
+    @property
+    def hands(self) -> List[Hand]:
+        """
+        Use this method to get players hands.
+
+        :return: Players hands
+        """
+    def board_n(self, n: int) -> List[Card]:
+        """
+        Use this method to get n game board.
+
+        :return: N game board
+        """
+
+class Hand:
+    """
+    Represents texas holdem poker hand.
+    """
+
+    @overload
+    def __init__(
+        self,
+        front: Card,
+        back: Card,
+    ) -> None: ...
+    @overload
+    def __init__(self, front: int, back: int) -> None: ...
+    @overload
+    def __init__(self, value: str) -> None: ...
+    def __eq__(self, other: Hand) -> bool: ...
+    def __gt__(self, other: Hand) -> bool: ...
+    def __lt__(self, other: Hand) -> bool: ...
+    def __ne__(self, other: Hand) -> bool: ...
+    def __str(self) -> str: ...
+    def __int__(self) -> int:
+        """
+        Use this method to get hand as bitset.
+
+        :return: Hand as bitset.
+        """
+    @property
+    def value(
+        self,
+    ) -> typing_extensions.Annotated[List[Card], pybind11_stubgen.typing_ext.FixedSize(2)]:
+        """
+        Use this method to get hand.
+
+        :return: Texas holdem poker hand
         """

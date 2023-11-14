@@ -7,7 +7,7 @@
 
 #include "constants.hpp"
 
-#include "python.hpp"
+#include "python/python.hpp"
 
 namespace python {
 auto setup_constants_all(py::module_ &module_) -> void {
@@ -39,4 +39,4 @@ auto setup_pyconstants_main(py::module_ &module_) -> void {
 }
 } // namespace python
 
-#endif // POKERENGINE_PYCONSTANTS_HPP
+#endif // POKERENGINE_CONSTANTS_HPP

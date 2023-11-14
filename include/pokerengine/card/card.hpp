@@ -35,12 +35,8 @@ public:
         value_ = static_cast< ValueType >(value);
     }
 
-    explicit representation< EnumType, ValueType, BitSetType >(const std::string &value) {
-        value_ = static_cast< ValueType >(magic_enum::enum_cast< EnumType >(value).value());
-    }
-
-    explicit representation< EnumType, ValueType, BitSetType >(std::string_view value)
-            : representation< EnumType, ValueType, BitSetType >(std::string{ value }) {
+    explicit representation< EnumType, ValueType, BitSetType >(char value) {
+        value_ = static_cast< ValueType >(magic_enum::enum_cast< EnumType >(std::string{ value }).value());
     }
 
     auto operator<=>(const representation &other) const noexcept -> std::strong_ordering = default;
@@ -86,9 +82,7 @@ public:
         }
     }
 
-    explicit card(std::string_view value)
-            : card{ rank{ string::split(value, constants::SEPARATOR)[0] },
-                    suit{ string::split(value, constants::SEPARATOR)[1] } } {
+    explicit card(std::string_view value) : card{ rank{ value[0] }, suit{ value[1] } } {
     }
 
     auto operator<=>(const card &other) const noexcept -> std::strong_ordering {

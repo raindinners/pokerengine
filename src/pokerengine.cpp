@@ -2,16 +2,14 @@
 // Created by copper_boy on 10/29/23.
 //
 
-#include <pybind11/operators.h>
-
 #include "card/card.hpp"
 
-#include "pycard/pycard__init__.hpp"
-#include "pyconstants.hpp"
-#include "pyengine/pyengine__init__.hpp"
-#include "pyenums.hpp"
-#include "pyevaluation/pyevaluation__init__.hpp"
-#include "pyutils.hpp"
+#include "python/pycard.hpp"
+#include "python/pyconstants.hpp"
+#include "python/pyengine.hpp"
+#include "python/pyenums.hpp"
+#include "python/pyevaluation.hpp"
+#include "python/python.hpp"
 
 #define STRINGIFY(x) #x
 #define MACRO_STRINGIFY(x) STRINGIFY(x)
@@ -23,7 +21,6 @@ auto setup_all(py::module_ &module_) -> void {
     setup_pycard_main(module_);
     setup_pyevaluation_main(module_);
     setup_pyengine_main(module_);
-    setup_pyutils_main(module_);
 }
 
 auto setup_main(py::module_ &module_) -> void {

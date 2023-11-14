@@ -7,6 +7,8 @@
 
 #include <cstdint>
 
+#include <magic_enum.hpp>
+
 #include "pokerengine.hpp"
 
 namespace pokerengine::enums {
@@ -84,5 +86,76 @@ enum class suit : int32_t {
     spades = 3,
 };
 } // namespace pokerengine::enums
+
+template <>
+constexpr magic_enum::customize::customize_t magic_enum::customize::enum_name< pokerengine::enums::rank >(
+                pokerengine::enums::rank value) noexcept {
+    switch (value) {
+    case pokerengine::enums::rank::two: {
+        return "2";
+    }
+    case pokerengine::enums::rank::three: {
+        return "3";
+    }
+    case pokerengine::enums::rank::four: {
+        return "4";
+    }
+    case pokerengine::enums::rank::five: {
+        return "5";
+    }
+    case pokerengine::enums::rank::six: {
+        return "6";
+    }
+    case pokerengine::enums::rank::seven: {
+        return "7";
+    }
+    case pokerengine::enums::rank::eight: {
+        return "8";
+    }
+    case pokerengine::enums::rank::nine: {
+        return "9";
+    }
+    case pokerengine::enums::rank::ten: {
+        return "t";
+    }
+    case pokerengine::enums::rank::jack: {
+        return "j";
+    }
+    case pokerengine::enums::rank::queen: {
+        return "q";
+    }
+    case pokerengine::enums::rank::king: {
+        return "k";
+    }
+    case pokerengine::enums::rank::ace: {
+        return "a";
+    }
+    default: {
+        return default_tag;
+    }
+    }
+}
+
+template <>
+constexpr magic_enum::customize::customize_t magic_enum::customize::enum_name< pokerengine::enums::suit >(
+                pokerengine::enums::suit value) noexcept {
+    switch (value) {
+    case pokerengine::enums::suit::clubs: {
+        return "c";
+    }
+    case pokerengine::enums::suit::diamonds: {
+        return "d";
+    }
+    case pokerengine::enums::suit::hearts: {
+        return "h";
+    }
+    case pokerengine::enums::suit::spades: {
+        return "s";
+    }
+    default: {
+        return default_tag;
+    }
+    }
+}
 
 #endif // POKERENGINE_ENUMS_HPP
