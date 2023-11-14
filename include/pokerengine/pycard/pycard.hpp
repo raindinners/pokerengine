@@ -19,8 +19,7 @@ auto setup_pycard(py::module_ &module_) -> void {
 
     py::class_< pokerengine::rank >(card, "Rank", py::module_local())
                     .def(py::init< pokerengine::enums::rank >(), py::arg("value"))
-                    .def(py::init< std::string_view >(), py::arg("value"))
-                    .def(py::init< const std::string & >(), py::arg("value"))
+                    .def(py::init< char >(), py::arg("value"))
                     .def(py::self == py::self, py::arg("other")) // NOLINT
                     .def(py::self != py::self, py::arg("other")) // NOLINT
                     .def(py::self > py::self, py::arg("other"))  // NOLINT
