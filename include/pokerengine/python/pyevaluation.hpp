@@ -2,20 +2,19 @@
 // Created by copper_boy on 11/2/23.
 //
 
-#ifndef POKERENGINE_PYRESULT_HPP
-#define POKERENGINE_PYRESULT_HPP
+#ifndef POKERENGINE_PYEVALUATION_HPP
+#define POKERENGINE_PYEVALUATION_HPP
 
-#include <pybind11/operators.h>
-
+#include "evaluator/evaluation_result.hpp"
 #include "evaluator/result.hpp"
 
-#include "python.hpp"
+#include "python/python.hpp"
 
 namespace python {
-auto setup_pyresult(py::module_ &module_) -> void {
-    auto result = module_.def_submodule("result");
+auto setup_pyevaluation_all(py::module_ &module_) -> void {
+    auto evaluation = module_.def_submodule("evaluation");
 
-    py::class_< pokerengine::result >(result, "Result", py::module_local())
+    py::class_< pokerengine::result >(evaluation, "Result", py::module_local())
                     .def(py::init< pokerengine::enums::combination, uint8_t, uint8_t, uint16_t >(),
                          py::arg("type"),
                          py::arg("major"),
@@ -41,7 +40,20 @@ auto setup_pyresult(py::module_ &module_) -> void {
                     .def_property_readonly("major_rank", &pokerengine::result::get_major_rank)
                     .def_property_readonly("kickers", &pokerengine::result::get_kickers)
                     .def_property_readonly("result", &pokerengine::result::get_result);
+
+    evaluation.def("get_evaluation_result",
+                   &pokerengine::get_evaluation_result,
+                   py::arg("cards"),
+                   py::arg("players"));
+    evaluation.def("get_evaluation_result_one",
+                   &pokerengine::get_evaluation_result_one,
+                   py::arg("cards"),
+                   py::arg("for_"));
+}
+
+auto setup_pyevaluation_main(py::module_ &module_) -> void {
+    setup_pyevaluation_all(module_);
 }
 } // namespace python
 
-#endif // POKERENGINE_PYRESULT_HPP
+#endif // POKERENGINE_PYEVALUATION_HPP

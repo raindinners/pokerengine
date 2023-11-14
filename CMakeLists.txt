@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 
-project(pokerengine VERSION 0.5)
+project(pokerengine VERSION 0.6)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -25,27 +25,14 @@ set(HEADER_FILES
         ${POKERENGINE_INCLUDE_DIR}/evaluator/lookup_tables.hpp
         ${POKERENGINE_INCLUDE_DIR}/evaluator/result.hpp
         ${POKERENGINE_INCLUDE_DIR}/pokerengine.hpp
-        ${POKERENGINE_INCLUDE_DIR}/pycard/pycard.hpp
-        ${POKERENGINE_INCLUDE_DIR}/pycard/pycard__init__.hpp
-        ${POKERENGINE_INCLUDE_DIR}/pycard/pycards.hpp
-        ${POKERENGINE_INCLUDE_DIR}/pycard/pyhand.hpp
-        ${POKERENGINE_INCLUDE_DIR}/pyconstants.hpp
-        ${POKERENGINE_INCLUDE_DIR}/pyengine/pyaction.hpp
-        ${POKERENGINE_INCLUDE_DIR}/pyengine/pyengine.hpp
-        ${POKERENGINE_INCLUDE_DIR}/pyengine/pyengine__init__.hpp
-        ${POKERENGINE_INCLUDE_DIR}/pyengine/pyplayer.hpp
-        ${POKERENGINE_INCLUDE_DIR}/pyengine/pypositions.hpp
-        ${POKERENGINE_INCLUDE_DIR}/pyengine/pypot.hpp
-        ${POKERENGINE_INCLUDE_DIR}/pyengine/pyround.hpp
-        ${POKERENGINE_INCLUDE_DIR}/pyenums.hpp
-        ${POKERENGINE_INCLUDE_DIR}/pyevaluation/pyevaluation__init__.hpp
-        ${POKERENGINE_INCLUDE_DIR}/pyevaluation/pyevaluation_result.hpp
-        ${POKERENGINE_INCLUDE_DIR}/pyevaluation/pyresult.hpp
-        ${POKERENGINE_INCLUDE_DIR}/python.hpp
-        ${POKERENGINE_INCLUDE_DIR}/pyutils.hpp
+        ${POKERENGINE_INCLUDE_DIR}/python/pycard.hpp
+        ${POKERENGINE_INCLUDE_DIR}/python/pyconstants.hpp
+        ${POKERENGINE_INCLUDE_DIR}/python/pyengine.hpp
+        ${POKERENGINE_INCLUDE_DIR}/python/pyenums.hpp
+        ${POKERENGINE_INCLUDE_DIR}/python/pyevaluation.hpp
+        ${POKERENGINE_INCLUDE_DIR}/python/python.hpp
         ${POKERENGINE_INCLUDE_DIR}/string.hpp
         ${POKERENGINE_INCLUDE_DIR}/types.hpp
-        ${POKERENGINE_INCLUDE_DIR}/utils.hpp
         ${POKERENGINE_INCLUDE_DIR}/vector.hpp)
 
 find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)

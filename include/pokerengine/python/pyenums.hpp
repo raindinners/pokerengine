@@ -7,7 +7,7 @@
 
 #include "enums.hpp"
 
-#include "python.hpp"
+#include "python/python.hpp"
 
 namespace python {
 auto setup_action_enum(py::module_ &module_) -> void {
@@ -121,4 +121,4 @@ auto setup_pyenums_main(py::module_ &module_) -> void {
 }
 } // namespace python
 
-#endif // POKERENGINE_PYENUMS_HPP
+#endif // POKERENGINE_ENUMS_HPP

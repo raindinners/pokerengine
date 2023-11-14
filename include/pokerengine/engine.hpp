@@ -28,6 +28,7 @@
 #include "evaluator/evaluation_result.hpp"
 #include "evaluator/result.hpp"
 #include "pokerengine.hpp"
+#include "vector.hpp"
 
 namespace pokerengine {
 struct player {
@@ -457,7 +458,7 @@ public:
                         player.behind);
     }
 
-    auto execute_action(const player_action &pa) -> void {
+    auto execute(const player_action &pa) -> void {
         if (!actual::is_normal_action(
                             pa,
                             get_possible_actions(),
@@ -630,8 +631,7 @@ public:
 
     [[nodiscard]] auto pot_rake() noexcept -> int32_t {
         auto flop_dealt = this->engine.round.get_flop_dealt();
-        return flop_dealt ? static_cast< int32_t >(pot(flop_dealt) * constants::RAKE_MULTI< A, B >) :
-                            pot(flop_dealt);
+        return flop_dealt ? static_cast< int32_t >(pot() * constants::RAKE_MULTI< A, B >) : pot();
     }
 
     [[maybe_unused]] auto pay(const cards &cards) -> std::vector< std::pair< result, int32_t > > {
@@ -644,7 +644,7 @@ public:
                         [&](auto value, const auto &element) {
                             return value +
                                             actual::get_side_pot_redistribution(
-                                                            this->engine.players.get_players(),
+                                                            iterable,
                                                             cards,
                                                             std::get< 0 >(element),
                                                             this->engine.round.get_flop_dealt(),
@@ -812,9 +812,9 @@ public:
     }
 
     actions_manager< engine< A, B > > actions = actions_manager< engine< A, B > >{ *this };
-    positions_manager< engine< A, B > > positions = positions_manager< engine< A, B > >{ *this };
     players_manager< engine< A, B > > players = players_manager< engine< A, B > >{ *this };
-    pot_manager< engine< A, B > > pot = pot_manager< engine< A, B > >{ *this };
+    positions_manager< engine< A, B > > positions = positions_manager< engine< A, B > >{ *this };
+    pot_manager< engine< A, B >, A, B > pot = pot_manager< engine< A, B > >{ *this };
     round_manager< engine< A, B > > round = round_manager< engine< A, B > >{ *this };
 
 private:
