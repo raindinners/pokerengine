@@ -777,6 +777,18 @@ public:
     explicit engine(const engine_traits &engine_traits) : engine_traits_{ engine_traits } {
     }
 
+    auto load(const engine_traits &engine_traits,
+              const std::vector< player > &ps,
+              enums::position position,
+              enums::round rd,
+              bool flop_dealt) -> void {
+        set_engine_traits(engine_traits);
+        players.set_players(ps);
+        positions.set_current(position);
+        round.set_round(rd);
+        round.set_flop_dealt(flop_dealt);
+    }
+
     auto start(bool is_new_game = false) -> void {
         stop();
 

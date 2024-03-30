@@ -20,6 +20,12 @@ auto setup_pyengine_template(py::module_ &module_, const std::string &pyclass_po
                     py::module_local());
     py::class_< pokerengine::engine< A, B > >(module_, ("Engine" + pyclass_postfix).c_str(), py::module_local())
                     .def(py::init< const pokerengine::engine_traits & >(), py::arg("traits"))
+                    .def("load", &pokerengine::engine<A, B>::load,
+                         py::arg("traits"),
+                         py::arg("players"),
+                         py::arg("position"),
+                         py::arg("round"),
+                         py::arg("flop_dealt"))
                     .def("start", &pokerengine::engine< A, B >::start, py::arg("new_game"))
                     .def("stop", &pokerengine::engine< A, B >::stop)
                     .def_property("traits",

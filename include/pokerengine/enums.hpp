@@ -88,7 +88,7 @@ enum class suit : int32_t {
 } // namespace pokerengine::enums
 
 template <>
-constexpr magic_enum::customize::customize_t magic_enum::customize::enum_name< pokerengine::enums::rank >(
+[[maybe_unused]] constexpr magic_enum::customize::customize_t magic_enum::customize::enum_name< pokerengine::enums::rank >(
                 pokerengine::enums::rank value) noexcept {
     switch (value) {
     case pokerengine::enums::rank::two: {
@@ -137,7 +137,7 @@ constexpr magic_enum::customize::customize_t magic_enum::customize::enum_name< p
 }
 
 template <>
-constexpr magic_enum::customize::customize_t magic_enum::customize::enum_name< pokerengine::enums::suit >(
+[[maybe_unused]] constexpr magic_enum::customize::customize_t magic_enum::customize::enum_name< pokerengine::enums::suit >(
                 pokerengine::enums::suit value) noexcept {
     switch (value) {
     case pokerengine::enums::suit::clubs: {

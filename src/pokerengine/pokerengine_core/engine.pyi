@@ -72,7 +72,16 @@ class EngineTraits:
 class _EngineDetail: ...
 
 class _Engine:
+    traits: EngineTraits
     def __init__(self, traits: EngineTraits) -> None: ...
+    def load(
+        self,
+        traits: EngineTraits,
+        players: List[Player],
+        position: PositionE,
+        round: RoundE,
+        flop_dealt: bool,
+    ) -> None: ...
     @property
     def actions(self) -> _Actions:
         """
