@@ -69,9 +69,9 @@ class EngineTraits:
 
     def __init__(self, sb_bet: int, bb_bet: int, bb_mult: int) -> None: ...
 
-class _EngineDetail: ...
+class EngineDetail: ...
 
-class _Engine:
+class Engine:
     traits: EngineTraits
     def __init__(self, traits: EngineTraits) -> None: ...
     def load(
@@ -83,35 +83,35 @@ class _Engine:
         flop_dealt: bool,
     ) -> None: ...
     @property
-    def actions(self) -> _Actions:
+    def actions(self) -> Actions:
         """
         Use this method to get actions manager.
 
         :return: Actions manager
         """
     @property
-    def players(self) -> _Players:
+    def players(self) -> Players:
         """
         Use this method to get players manager.
 
         :return: Players manager
         """
     @property
-    def positions(self) -> _Positions:
+    def positions(self) -> Positions:
         """
         Use this method to get positions manager.
 
         :return: Positions manager
         """
     @property
-    def pot(self) -> _Pot:
+    def pot(self) -> Pot:
         """
         Use this method to get pot manager.
 
         :return: Pot manager
         """
     @property
-    def round(self) -> _Round:
+    def round(self) -> Round:
         """
         Use this method to get round manager.
 
@@ -131,8 +131,8 @@ class _Engine:
         :return: :class:`None`
         """
 
-class _Actions(_EngineDetail):
-    def __init__(self, engine: _Engine) -> None: ...
+class Actions(EngineDetail):
+    def __init__(self, engine: Engine) -> None: ...
     @property
     def actions(self) -> List[PlayerAction]:
         """
@@ -148,12 +148,12 @@ class _Actions(_EngineDetail):
         :return: :class:`None`
         """
 
-class _Players(_EngineDetail):
+class Players(EngineDetail):
     """
     Game players manager.
     """
 
-    def __init__(self, engine: _Engine) -> None: ...
+    def __init__(self, engine: Engine) -> None: ...
     @property
     def players(self) -> List[Player]:
         """
@@ -190,14 +190,14 @@ class _Players(_EngineDetail):
         :return: :class:`None`
         """
 
-class _Positions(_EngineDetail):
+class Positions(EngineDetail):
     """
     Game positions manager.
     """
 
     current: PositionE = PositionE.NONE
 
-    def __init__(self, engine: _Engine) -> None: ...
+    def __init__(self, engine: Engine) -> None: ...
     @property
     def number_alive(self) -> int:
         """
@@ -245,12 +245,12 @@ class _Positions(_EngineDetail):
         :return: :class:`None`
         """
 
-class _Pot(_EngineDetail):
+class Pot(EngineDetail):
     """
     Game pot manager.
     """
 
-    def __init__(self, engine: _Engine) -> None: ...
+    def __init__(self, engine: Engine) -> None: ...
     @property
     def highest_bet(self) -> int:
         """
@@ -291,7 +291,7 @@ class _Pot(_EngineDetail):
         :return: Pot (rake adjusted)
         """
 
-class _Round(_EngineDetail):
+class Round(EngineDetail):
     """
     Game round manager.
     """
@@ -299,7 +299,7 @@ class _Round(_EngineDetail):
     flop_dealt: bool = False
     round: RoundE = RoundE.NONE
 
-    def __init__(self, engine: _Engine) -> None: ...
+    def __init__(self, engine: Engine) -> None: ...
     @property
     def showdown(self) -> bool:
         """
@@ -314,9 +314,9 @@ class _Round(_EngineDetail):
         :return: :class:`None`
         """
 
-class EngineRake01(_Engine): ...
-class ActionsRake01(_Actions): ...
-class PlayersRake01(_Players): ...
-class PositionsRake01(_Positions): ...
-class PotRake01(_Pot): ...
-class RoundRake01(_Round): ...
+class EngineRake01(Engine): ...
+class ActionsRake01(Actions): ...
+class PlayersRake01(Players): ...
+class PositionsRake01(Positions): ...
+class PotRake01(Pot): ...
+class RoundRake01(Round): ...

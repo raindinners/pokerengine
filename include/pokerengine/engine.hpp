@@ -414,8 +414,8 @@ public:
         return players_;
     }
 
-    [[nodiscard]] auto get_player(uint8_t index) -> player & {
-        return *(players_.begin() + index);
+    [[nodiscard]] auto get_player(int8_t index) -> player & {
+        return (index < 0 || index > players_.size())? default_player_ : *(players_.begin() + index);
     }
 
     auto set_players(const std::vector< player > &players) noexcept -> void {
@@ -437,6 +437,7 @@ public:
 
 private:
     std::vector< player > players_;
+    player default_player_ = player(true, 0, 0, 0, 0, enums::state::none);
 };
 
 template < typename Engine >
@@ -445,6 +446,11 @@ public:
     using actual::engine_detail< Engine >::engine_detail;
 
     [[nodiscard]] auto get_possible_actions() const -> std::vector< player_action > {
+        if (this->engine.round.get_round() == enums::round::none ||
+            this->engine.round.get_round() == enums::round::showdown) {
+            return std::vector<player_action>{};
+        }
+
         auto player = this->engine.positions.get_player();
         return actual::get_possible_actions(
                         this->engine.round.get_round(),
@@ -531,11 +537,11 @@ public:
     }
 
     [[nodiscard]] auto get_player() const -> player {
-        return this->engine.players.get_player(static_cast< int8_t >(get_current()));
+        return this->engine.players.get_player(static_cast< int >(get_current()));
     }
 
     [[nodiscard]] auto get_player() -> player & {
-        return this->engine.players.get_player(static_cast< int8_t >(get_current()));
+        return this->engine.players.get_player(static_cast< int >(get_current()));
     }
 
     [[nodiscard]] auto get_number_alive() const -> int {
@@ -578,7 +584,7 @@ public:
         auto iterable_size = this->engine.players.get_players().size();
         do {
             set_current(static_cast< enums::position >(
-                            (static_cast< uint8_t >(get_current()) + 1) % iterable_size));
+                            (static_cast< int >(get_current()) + 1) % iterable_size));
         } while (get_player().state == enums::state::out || get_player().state == enums::state::allin);
     }
 
@@ -588,7 +594,7 @@ public:
         auto iterable_size = this->engine.players.get_players().size();
         while (get_player().state == enums::state::out || get_player().state == enums::state::allin) {
             set_current(static_cast< enums::position >(
-                            (static_cast< uint8_t >(get_current()) + 1) % iterable_size));
+                            (static_cast< int >(get_current()) + 1) % iterable_size));
         }
     }
 
@@ -604,16 +610,22 @@ public:
 
     [[nodiscard]] auto get_highest_bet() const -> int32_t {
         auto iterable = this->engine.players.get_players();
-        return std::max_element(iterable.cbegin(), iterable.cend(), [](const auto &lhs, const auto &rhs) -> bool {
-                   return lhs.front < rhs.front;
-               })->front;
+        auto max = std::max_element(
+                        iterable.cbegin(), iterable.cend(), [](const auto &lhs, const auto &rhs) -> bool {
+                            return lhs.front < rhs.front;
+                        });
+
+        return max == iterable.end() ? 0 : max->front;
     }
 
     [[nodiscard]] auto get_round_highest_bet() const -> int32_t {
         auto iterable = this->engine.players.get_players();
-        return std::max_element(iterable.cbegin(), iterable.cend(), [](const auto &lhs, const auto &rhs) -> bool {
-                   return lhs.round_bet < rhs.round_bet;
-               })->round_bet;
+        auto max = std::max_element(
+                        iterable.cbegin(), iterable.cend(), [](const auto &lhs, const auto &rhs) -> bool {
+                            return lhs.round_bet < rhs.round_bet;
+                        });
+
+        return max == iterable.end() ? 0 : max->round_bet;
     }
 
     [[nodiscard]] auto pot() const noexcept -> int32_t {
