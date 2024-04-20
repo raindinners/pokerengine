@@ -394,7 +394,7 @@ auto get_side_pot_redistribution(
 }
 
 auto get_next_round(enums::round round) -> std::tuple< enums::round, bool > {
-    auto result = static_cast< enums::round >(static_cast< uint8_t >(round) + 1);
+    auto result = static_cast< enums::round >(static_cast< int8_t >(round) + 1);
     return std::make_tuple(result, result == enums::round::flop);
 }
 } // namespace v1
@@ -640,7 +640,7 @@ public:
         return flop_dealt ? static_cast< int32_t >(pot() * constants::RAKE_MULTI< A, B >) : pot();
     }
 
-    [[maybe_unused]] auto pay(const cards &cards) -> std::vector< std::pair< result, int32_t > > {
+    auto pay(const cards &cards) -> std::vector< std::pair< result, int32_t > > {
         auto iterable = this->engine.players.get_players();
         auto pots = actual::get_all_pots(iterable, get_highest_bet());
         auto chips = std::accumulate(
@@ -668,7 +668,7 @@ public:
         return results;
     }
 
-    [[maybe_unused]] auto pay_noshowdown() -> std::vector< int32_t > {
+    auto pay_noshowdown() -> std::vector< int32_t > {
         auto iterable = this->engine.players.get_players();
         auto adjusted_pot = actual::get_adjust_pot< A, B >(
                         iterable, get_highest_bet(), this->engine.round.get_flop_dealt());
@@ -806,6 +806,8 @@ public:
         if (actual::is_all_allin(new_players)) {
             round.set_round(enums::round::showdown);
         } else {
+            round.set_round(enums::round::preflop);
+
             positions.set_current(
                             new_players.size() > constants::MIN_PLAYERS ? enums::position::utg :
                                                                           enums::position::sb);

@@ -52,7 +52,7 @@ public:
     }
 
     template < std::enable_if_t< N == 2, int > = 0 >
-    [[maybe_unused]] explicit hand_helper(std::string_view str)
+    explicit hand_helper(std::string_view str)
             : hand_helper(T{ str.substr(0 * char_count, char_count) },
                           T{ str.substr(1 * char_count, char_count) }) {
         if (str.size() != 2 * char_count) {

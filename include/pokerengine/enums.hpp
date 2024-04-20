@@ -23,7 +23,7 @@ enum class action : int8_t {
 };
 
 enum class combination : int8_t {
-    none [[maybe_unused]] = -1,
+    none = -1,
     no_pair = 0,
     one_pair = 1,
     two_pair = 2,
@@ -40,10 +40,10 @@ enum class position : int8_t {
     sb = 0,
     bb = 1,
     utg = 2,
-    lwj [[maybe_unused]] = 3,
-    hij [[maybe_unused]] = 4,
-    cof [[maybe_unused]] = 5,
-    btn [[maybe_unused]] = 6,
+    lwj = 3,
+    hij = 4,
+    cof = 5,
+    btn = 6,
 };
 
 enum class rank : uint8_t {
@@ -66,7 +66,7 @@ enum class round : int8_t {
     none = -1,
     preflop = 0,
     flop = 1,
-    turn [[maybe_unused]] = 2,
+    turn = 2,
     river = 3,
     showdown = 4,
 };

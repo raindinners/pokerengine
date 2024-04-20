@@ -110,11 +110,11 @@ public:
         return card_;
     }
 
-    [[nodiscard, maybe_unused]] auto get_rank() const noexcept -> rank {
+    [[nodiscard]] auto get_rank() const noexcept -> rank {
         return rank{ enums::rank(uint8_t(card_ % constants::RANKS)) };
     }
 
-    [[nodiscard, maybe_unused]] auto get_suit() const noexcept -> suit {
+    [[nodiscard]] auto get_suit() const noexcept -> suit {
         return suit{ enums::suit(uint8_t(card_ / constants::RANKS)) };
     }
 
@@ -154,15 +154,15 @@ public:
         }
     }
 
-    [[nodiscard, maybe_unused]] auto size() const noexcept -> size_t {
+    [[nodiscard]] auto size() const noexcept -> size_t {
         return std::popcount(get_cards());
     }
 
-    [[nodiscard, maybe_unused]] auto contains(const card &value) const noexcept -> bool {
+    [[nodiscard]] auto contains(const card &value) const noexcept -> bool {
         return (get_cards() & value.as_bitset()) != 0;
     }
 
-    [[nodiscard, maybe_unused]] auto contains(const card_set &value) const noexcept -> bool {
+    [[nodiscard]] auto contains(const card_set &value) const noexcept -> bool {
         return (get_cards() | value.get_cards()) == get_cards();
     }
 
@@ -174,27 +174,27 @@ public:
         return card_set{ get_cards() | value.get_cards() };
     }
 
-    [[maybe_unused]] auto clear() noexcept -> void {
+    auto clear() noexcept -> void {
         set_cards(0);
     }
 
-    [[maybe_unused]] auto fill() noexcept -> void {
+    auto fill() noexcept -> void {
         set_cards(constants::CARD_SET_FULL);
     }
 
-    [[maybe_unused]] auto insert(const card &value) noexcept -> void {
+    auto insert(const card &value) noexcept -> void {
         set_cards(get_cards() | value.as_bitset());
     }
 
-    [[maybe_unused]] auto join(const card_set &value) noexcept -> void {
+    auto join(const card_set &value) noexcept -> void {
         set_cards(get_cards() | value.get_cards());
     }
 
-    [[maybe_unused]] auto remove(const card &value) noexcept -> void {
+    auto remove(const card &value) noexcept -> void {
         set_cards(get_cards() ^ value.as_bitset());
     }
 
-    [[maybe_unused]] auto remove(const card_set value) noexcept -> void {
+    auto remove(const card_set value) noexcept -> void {
         set_cards(get_cards() ^ value.get_cards());
     }
 
