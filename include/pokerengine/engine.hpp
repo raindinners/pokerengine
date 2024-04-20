@@ -415,7 +415,7 @@ public:
     }
 
     [[nodiscard]] auto get_player(int8_t index) -> player & {
-        return (index < 0 || index > players_.size())? default_player_ : *(players_.begin() + index);
+        return (index < 0 || index > players_.size()) ? default_player_ : *(players_.begin() + index);
     }
 
     auto set_players(const std::vector< player > &players) noexcept -> void {
@@ -448,7 +448,7 @@ public:
     [[nodiscard]] auto get_possible_actions() const -> std::vector< player_action > {
         if (this->engine.round.get_round() == enums::round::none ||
             this->engine.round.get_round() == enums::round::showdown) {
-            return std::vector<player_action>{};
+            return std::vector< player_action >{};
         }
 
         auto player = this->engine.positions.get_player();
@@ -814,7 +814,7 @@ public:
         } else {
             positions.set_current(
                             new_players.size() > constants::MIN_PLAYERS ? enums::position::utg :
-                                                                          enums::position::bb);
+                                                                          enums::position::sb);
 
             if (positions.get_player().state == enums::state::allin) {
                 positions.set_next_current();

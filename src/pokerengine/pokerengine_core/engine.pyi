@@ -15,6 +15,7 @@ class Player:
     """
 
     is_left: bool
+    """Is player out of game."""
     stack: int
     """Player stacksize."""
     behind: int
@@ -22,7 +23,9 @@ class Player:
     front: int
     """Player bet for the game."""
     round_bet: int
+    """Player bet for the round."""
     state: StateE
+    """Player state in round."""
 
     def __init__(
         self,
