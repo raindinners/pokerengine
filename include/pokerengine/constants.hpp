@@ -32,6 +32,7 @@ const std::string CARDS_STRING =
 const uint64_t CARD_SET_FULL = 0xFFFFFFFFFFFFFFFF >> (64 - DECK_SIZE);
 
 const uint8_t BOARD_SIZE = 5;
+const uint8_t HAND_SIZE = 2;
 
 const uint8_t MIN_PLAYERS = 2;
 const uint8_t MAX_PLAYERS = 7;

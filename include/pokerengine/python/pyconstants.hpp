@@ -24,6 +24,7 @@ auto setup_constants_all(py::module_ &module_) -> void {
     constants.attr("CARDS_STRING") = pokerengine::constants::CARDS_STRING;
     constants.attr("CARD_SET_FULL") = pokerengine::constants::CARD_SET_FULL;
     constants.attr("BOARD_SIZE") = pokerengine::constants::BOARD_SIZE;
+    constants.attr("HAND_SIZE") = pokerengine::constants::HAND_SIZE;
     constants.attr("MIN_PLAYERS") = pokerengine::constants::MIN_PLAYERS;
     constants.attr("MAX_PLAYERS") = pokerengine::constants::MAX_PLAYERS;
     constants.attr("RAKE01") = pokerengine::constants::RAKE< 0, 1 >;

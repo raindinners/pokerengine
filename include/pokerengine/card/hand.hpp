@@ -1,5 +1,5 @@
 //
-// Created by copper_boy on 7/4/23.
+// Created by copper_boy on 7/4/constants::HAND_SIZE3.
 //
 
 #ifndef POKERENGINE_HAND_HPP
@@ -13,6 +13,7 @@
 #include <type_traits>
 
 #include "card/card.hpp"
+#include "constants.hpp"
 #include "pokerengine.hpp"
 #include "types.hpp"
 
@@ -38,7 +39,7 @@ class hand_helper {
 public:
     hand_helper() = delete;
 
-    template < std::enable_if_t< N == 2, int > = 0 >
+    template < std::enable_if_t< N == constants::HAND_SIZE, int > = 0 >
     hand_helper(T first, T second) noexcept(allow_duplicates) : value_{ first, second } {
         if (!allow_duplicates &&
             (static_cast< card >(static_cast< card >(static_cast< card >(first))) == second)) {
@@ -46,23 +47,23 @@ public:
         }
     }
 
-    template < std::enable_if_t< is_card_v< T > && N == 2, int > = 0 >
+    template < std::enable_if_t< is_card_v< T > && N == constants::HAND_SIZE, int > = 0 >
     hand_helper(uint8_t first, uint8_t second) noexcept(allow_duplicates)
             : hand_helper{ T{ first }, T{ second } } {
     }
 
-    template < std::enable_if_t< N == 2, int > = 0 >
+    template < std::enable_if_t< N == constants::HAND_SIZE, int > = 0 >
     explicit hand_helper(std::string_view str)
             : hand_helper(T{ str.substr(0 * char_count, char_count) },
                           T{ str.substr(1 * char_count, char_count) }) {
-        if (str.size() != 2 * char_count) {
+        if (str.size() != constants::HAND_SIZE * char_count) {
             throw std::runtime_error{ "Tried to create a hand with a string of wrong size" };
         }
     }
 
     auto operator<=>(const hand_helper &other) const noexcept -> std::strong_ordering = default;
 
-    template < std::enable_if_t< N == 2, int > = 0 >
+    template < std::enable_if_t< N == constants::HAND_SIZE, int > = 0 >
     explicit operator std::string() const {
         auto iterable = get_value();
         return std::string{ iterable.front() } + std::string{ iterable.back() };
@@ -98,7 +99,7 @@ private:
 };
 } // namespace v1
 
-using hand = actual::hand_helper< card, false, 2 >;
+using hand = actual::hand_helper< card, false, constants::HAND_SIZE >;
 } // namespace pokerengine
 
 #endif // POKERENGINE_HAND_HPP
