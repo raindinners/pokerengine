@@ -243,9 +243,9 @@ auto set_blinds(std::vector< player > &players, int32_t sb_bet, int32_t bb_bet) 
 
         if (index < 2) {
             if (players.size() == constants::MIN_PLAYERS) {
-                player.front = index == 0 ? bb_bet : sb_bet;
-            } else {
                 player.front = index == 0 ? sb_bet : bb_bet;
+            } else {
+                player.front = index == 0 ? bb_bet : sb_bet;
             }
 
             player.state = enums::state::alive;
