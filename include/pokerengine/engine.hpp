@@ -84,12 +84,13 @@ protected:
 };
 
 auto is_no_actions_available(enums::round round, enums::state state) noexcept -> bool {
-    return (state == enums::state::out || state == enums::state::allin) || round == enums::round::showdown;
+    return (state == enums::state::out || state == enums::state::allin) || round == enums::round::none ||
+                    round == enums::round::showdown;
 }
 
 auto get_fold_or_check(enums::position player, int32_t highest_round_bet, int32_t committed) noexcept
                 -> player_action {
-    if (committed == highest_round_bet) {
+    if (committed == highest_round_bet || !highest_round_bet) {
         return player_action{ 0, enums::action::check, player };
     }
     return player_action{ 0, enums::action::fold, player };
@@ -242,6 +243,7 @@ auto set_blinds(std::vector< player > &players, int32_t sb_bet, int32_t bb_bet) 
         player.front = 0;
 
         if (index < 2) {
+            player.state = index == 0 ? enums::state::alive : enums::state::init;
             player.front = index == 0 ? sb_bet : bb_bet;
 
             if (player.front > player.behind) {
@@ -440,11 +442,6 @@ public:
     using actual::engine_detail< Engine >::engine_detail;
 
     [[nodiscard]] auto get_possible_actions() const -> std::vector< player_action > {
-        if (this->engine.round.get_round() == enums::round::none ||
-            this->engine.round.get_round() == enums::round::showdown) {
-            return std::vector< player_action >{};
-        }
-
         auto player = this->engine.positions.get_player();
         return actual::get_possible_actions(
                         this->engine.round.get_round(),
@@ -470,7 +467,7 @@ public:
         auto &player = this->engine.positions.get_player();
         this->engine.get_engine_traits().set_min_raise(actual::execute_action(
                         pa,
-                        this->engine.positions.get_player(),
+                        player,
                         this->engine.get_engine_traits().get_min_raise(),
                         this->engine.pot.get_round_highest_bet()));
 
@@ -518,6 +515,8 @@ public:
         } else {
             this->engine.positions.set_next_current();
         }
+
+        this->engine.players.set_players(iterable);
     }
 };
 
