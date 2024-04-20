@@ -217,8 +217,8 @@ public:
     }
 
     [[nodiscard]] auto generate() -> card {
-        return card{ rank{ enums::rank{ int8_t(dist_rank_(rng_)) } },
-                     suit{ enums::suit{ static_cast< int8_t >(dist_suit_(rng_)) } } };
+        return card{ rank{ enums::rank{ uint8_t(dist_rank_(rng_)) } },
+                     suit{ enums::suit{ static_cast< uint8_t >(dist_suit_(rng_)) } } };
     }
 
     [[nodiscard]] auto generate_v(uint8_t n) -> std::vector< card > {

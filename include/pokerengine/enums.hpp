@@ -12,7 +12,7 @@
 #include "pokerengine.hpp"
 
 namespace pokerengine::enums {
-enum class action : int {
+enum class action : int8_t {
     none = -1,
     fold = 0,
     check = 1,
@@ -22,8 +22,8 @@ enum class action : int {
     allin = 5,
 };
 
-enum class combination : int {
-    none = -1,
+enum class combination : int8_t {
+    none [[maybe_unused]] = -1,
     no_pair = 0,
     one_pair = 1,
     two_pair = 2,
@@ -35,7 +35,7 @@ enum class combination : int {
     straight_flush = 8,
 };
 
-enum class position : int {
+enum class position : int8_t {
     none = -1,
     sb = 0,
     bb = 1,
@@ -46,7 +46,7 @@ enum class position : int {
     btn [[maybe_unused]] = 6,
 };
 
-enum class rank : int {
+enum class rank : uint8_t {
     two = 0,
     three = 1,
     four = 2,
@@ -62,16 +62,16 @@ enum class rank : int {
     ace = 12,
 };
 
-enum class round : int {
+enum class round : int8_t {
     none = -1,
     preflop = 0,
     flop = 1,
-    turn = 2,
+    turn [[maybe_unused]] = 2,
     river = 3,
     showdown = 4,
 };
 
-enum class state : int {
+enum class state : int8_t {
     none = -1,
     init = 0,
     out = 1,
@@ -79,7 +79,7 @@ enum class state : int {
     allin = 3,
 };
 
-enum class suit : int32_t {
+enum class suit : uint8_t {
     clubs = 0,
     diamonds = 1,
     hearts = 2,
@@ -88,8 +88,9 @@ enum class suit : int32_t {
 } // namespace pokerengine::enums
 
 template <>
-[[maybe_unused]] constexpr magic_enum::customize::customize_t magic_enum::customize::enum_name< pokerengine::enums::rank >(
-                pokerengine::enums::rank value) noexcept {
+[[maybe_unused]] constexpr magic_enum::customize::customize_t
+                magic_enum::customize::enum_name< pokerengine::enums::rank >(
+                                pokerengine::enums::rank value) noexcept {
     switch (value) {
     case pokerengine::enums::rank::two: {
         return "2";
@@ -137,8 +138,9 @@ template <>
 }
 
 template <>
-[[maybe_unused]] constexpr magic_enum::customize::customize_t magic_enum::customize::enum_name< pokerengine::enums::suit >(
-                pokerengine::enums::suit value) noexcept {
+[[maybe_unused]] constexpr magic_enum::customize::customize_t
+                magic_enum::customize::enum_name< pokerengine::enums::suit >(
+                                pokerengine::enums::suit value) noexcept {
     switch (value) {
     case pokerengine::enums::suit::clubs: {
         return "c";

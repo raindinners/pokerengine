@@ -1,10 +1,13 @@
 cmake_minimum_required(VERSION 3.12)
 
-project(pokerengine VERSION 1.1.2)
+project(pokerengine VERSION 1.1.3)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+
+
+set(LIBRARY_NAME pokerengine_core)
 
 set(POKERENGINE_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include/pokerengine)
 set(POKERENGINE_SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
@@ -39,8 +42,8 @@ find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
 find_package(pybind11 CONFIG REQUIRED)
 find_package(magic_enum CONFIG REQUIRED)
 
-python_add_library(pokerengine_core MODULE ${SOURCE_FILES} ${HEADER_FILES} WITH_SOABI)
-target_link_libraries(pokerengine_core PRIVATE pybind11::headers magic_enum::magic_enum)
-target_compile_definitions(pokerengine_core PRIVATE VERSION_INFO=${PROJECT_VERSION})
+python_add_library(${LIBRARY_NAME} MODULE ${SOURCE_FILES} ${HEADER_FILES} WITH_SOABI)
+target_link_libraries(${LIBRARY_NAME} PRIVATE pybind11::headers magic_enum::magic_enum)
+target_compile_definitions(${LIBRARY_NAME} PRIVATE VERSION_INFO=${PROJECT_VERSION})
 
-install(TARGETS pokerengine_core DESTINATION pokerengine)
+install(TARGETS ${LIBRARY_NAME} DESTINATION pokerengine)

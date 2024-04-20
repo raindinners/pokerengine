@@ -55,8 +55,8 @@ public:
         return result_;
     }
 
-    [[nodiscard]] auto get_type() const noexcept -> uint8_t {
-        return static_cast< uint8_t >(get_result() >> constants::OFFSET_TYPE);
+    [[nodiscard]] auto get_type() const noexcept -> int8_t {
+        return static_cast< int8_t >(get_result() >> constants::OFFSET_TYPE);
     }
 
     [[nodiscard]] auto get_major_rank() const noexcept -> rank {

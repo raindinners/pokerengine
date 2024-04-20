@@ -242,13 +242,7 @@ auto set_blinds(std::vector< player > &players, int32_t sb_bet, int32_t bb_bet) 
         player.front = 0;
 
         if (index < 2) {
-            if (players.size() == constants::MIN_PLAYERS) {
-                player.front = index == 0 ? sb_bet : bb_bet;
-            } else {
-                player.front = index == 0 ? bb_bet : sb_bet;
-            }
-
-            player.state = enums::state::alive;
+            player.front = index == 0 ? sb_bet : bb_bet;
 
             if (player.front > player.behind) {
                 player.front = player.behind;
@@ -537,11 +531,11 @@ public:
     }
 
     [[nodiscard]] auto get_player() const -> player {
-        return this->engine.players.get_player(static_cast< int >(get_current()));
+        return this->engine.players.get_player(static_cast< int8_t >(get_current()));
     }
 
     [[nodiscard]] auto get_player() -> player & {
-        return this->engine.players.get_player(static_cast< int >(get_current()));
+        return this->engine.players.get_player(static_cast< int8_t >(get_current()));
     }
 
     [[nodiscard]] auto get_number_alive() const -> int {
@@ -584,7 +578,7 @@ public:
         auto iterable_size = this->engine.players.get_players().size();
         do {
             set_current(static_cast< enums::position >(
-                            (static_cast< int >(get_current()) + 1) % iterable_size));
+                            (static_cast< int8_t >(get_current()) + 1) % iterable_size));
         } while (get_player().state == enums::state::out || get_player().state == enums::state::allin);
     }
 
@@ -594,7 +588,7 @@ public:
         auto iterable_size = this->engine.players.get_players().size();
         while (get_player().state == enums::state::out || get_player().state == enums::state::allin) {
             set_current(static_cast< enums::position >(
-                            (static_cast< int >(get_current()) + 1) % iterable_size));
+                            (static_cast< int8_t >(get_current()) + 1) % iterable_size));
         }
     }
 
