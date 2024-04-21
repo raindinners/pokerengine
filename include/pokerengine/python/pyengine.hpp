@@ -20,7 +20,8 @@ auto setup_pyengine_template(py::module_ &module_, const std::string &pyclass_po
                     py::module_local());
     py::class_< pokerengine::engine< A, B > >(module_, ("Engine" + pyclass_postfix).c_str(), py::module_local())
                     .def(py::init< const pokerengine::engine_traits & >(), py::arg("traits"))
-                    .def("load", &pokerengine::engine<A, B>::load,
+                    .def("load",
+                         &pokerengine::engine< A, B >::load,
                          py::arg("traits"),
                          py::arg("players"),
                          py::arg("position"),
@@ -56,10 +57,11 @@ auto setup_pyengine_template(py::module_ &module_, const std::string &pyclass_po
                          py::arg("players"))
                     .def("add_player",
                          &pokerengine::players_manager< pokerengine::engine< A, B > >::add_player,
-                         py::arg("stack"))
+                         py::arg("stack"),
+                         py::arg("id"))
                     .def("remove_player",
                          &pokerengine::players_manager< pokerengine::engine< A, B > >::remove_player,
-                         py::arg("index"))
+                         py::arg("id"))
                     .def_property_readonly(
                                     "players",
                                     &pokerengine::players_manager< pokerengine::engine< A, B > >::get_players);
@@ -144,13 +146,14 @@ auto setup_pyengine_notemplate(py::module_ &module_) -> void {
                                   &pokerengine::engine_traits::get_min_raise,
                                   &pokerengine::engine_traits::set_min_raise);
     py::class_< pokerengine::player >(module_, "Player", py::module_local())
-                    .def(py::init< bool, int32_t, int32_t, int32_t, int32_t, pokerengine::enums::state >(),
+                    .def(py::init< bool, int32_t, int32_t, int32_t, int32_t, pokerengine::enums::state, std::string >(),
                          py::arg("is_left"),
                          py::arg("stack"),
                          py::arg("behind"),
                          py::arg("front"),
                          py::arg("round_bet"),
-                         py::arg("state"))
+                         py::arg("state"),
+                         py::arg("id"))
                     .def(py::self == py::self, py::arg("other")) // NOLINT
                     .def("__str__",
                          [](pokerengine::player &self) -> std::string { return std::string{ self }; })
@@ -159,7 +162,8 @@ auto setup_pyengine_notemplate(py::module_ &module_) -> void {
                     .def_readwrite("behind", &pokerengine::player::behind)
                     .def_readwrite("front", &pokerengine::player::front)
                     .def_readwrite("round_bet", &pokerengine::player::round_bet)
-                    .def_readwrite("state", &pokerengine::player::state);
+                    .def_readwrite("state", &pokerengine::player::state)
+                    .def_readwrite("id", &pokerengine::player::id);
     py::class_< pokerengine::player_action >(module_, "PlayerAction", py::module_local())
                     .def(py::init< int32_t, pokerengine::enums::action, pokerengine::enums::position >(),
                          py::arg("amount"),

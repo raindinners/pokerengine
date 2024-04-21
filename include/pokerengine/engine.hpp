@@ -15,6 +15,7 @@
 #include <numeric>
 #include <span>
 #include <stdexcept>
+#include <string>
 #include <tuple>
 #include <type_traits>
 #include <utility>
@@ -41,6 +42,8 @@ struct player {
 
     enums::state state;
 
+    std::string id;
+
     auto operator<=>(const player &other) const noexcept -> std::strong_ordering = delete;
     auto operator==(const player &other) const noexcept -> bool = default;
 
@@ -48,9 +51,9 @@ struct player {
         using namespace std::literals;
 
         return "Player<is_left="s + std::to_string(is_left) + ", stack="s + std::to_string(stack) +
-                        ", behind="s + std::to_string(stack) + ", front="s + std::to_string(stack) +
-                        ", round_bet="s + std::to_string(stack) + ", state="s +
-                        std::string{ magic_enum::enum_name(state) } + ">"s;
+                        ", behind="s + std::to_string(behind) + ", front="s + std::to_string(front) +
+                        ", round_bet="s + std::to_string(round_bet) + ", state="s +
+                        std::string{ magic_enum::enum_name(state) } + ", id="s + id + ">"s;
     }
 };
 
@@ -418,22 +421,27 @@ public:
         players_ = players;
     }
 
-    auto add_player(int32_t stack) -> void {
+    auto add_player(int32_t stack, const std::string &id) -> void {
         auto traits = this->engine.get_engine_traits();
         if (stack < traits.get_bb_bet() * traits.get_bb_mult()) {
             throw std::runtime_error{ "Player stack less than game minimal stacksize" };
         }
 
-        players_.emplace_back(false, stack, 0, 0, 0, enums::state::init);
+        players_.emplace_back(false, stack, 0, 0, 0, enums::state::init, id);
     }
 
-    auto remove_player(uint8_t index) -> void {
-        players_[index].is_left = true;
+    auto remove_player(const std::string &id) -> void {
+        for (auto &player : players_) {
+            if (player.id == id) {
+                player.is_left = true;
+            }
+        }
     }
+
 
 private:
     std::vector< player > players_;
-    player default_player_ = player(true, 0, 0, 0, 0, enums::state::none);
+    player default_player_ = player(true, 0, 0, 0, 0, enums::state::none, "DEFAULT");
 };
 
 template < typename Engine >

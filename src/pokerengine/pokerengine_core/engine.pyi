@@ -26,6 +26,8 @@ class Player:
     """Player bet for the round."""
     state: StateE
     """Player state in round."""
+    id: str
+    """Player ID."""
 
     def __init__(
         self,
@@ -178,18 +180,19 @@ class Players(EngineDetail):
         :param players: New players
         :return: :class:`None`
         """
-    def add_player(self, stack: int) -> None:
+    def add_player(self, stack: int, id: str) -> None:
         """
         Use this method to add player in the game.
 
         :param stack: Player stack in the game
+        :param id: Player ID
         :return: :class:`None`
         """
-    def remove_player(self, index: int) -> None:
+    def remove_player(self, id: str) -> None:
         """
         Use this method to add player in the game.
 
-        :param index: Player index
+        :param id: Player ID
         :return: :class:`None`
         """
 
