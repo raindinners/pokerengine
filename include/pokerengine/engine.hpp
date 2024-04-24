@@ -736,9 +736,9 @@ class engine_traits {
 public:
     engine_traits() = delete;
 
-    engine_traits(int32_t sb_bet, int32_t bb_bet, uint8_t bb_mult)
+    engine_traits(int32_t sb_bet, int32_t bb_bet, uint8_t bb_mult, int32_t min_raise = -1)
             : sb_bet_{ sb_bet }, bb_bet_{ bb_bet }, bb_mult_{ bb_mult } {
-        min_raise_ = bb_bet_;
+        min_raise_ = min_raise > 0 ? min_raise : bb_bet_;
     }
 
     [[nodiscard]] auto get_sb_bet() const noexcept -> int32_t {

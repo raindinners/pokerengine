@@ -129,10 +129,11 @@ auto setup_pyengine_template(py::module_ &module_, const std::string &pyclass_po
 
 auto setup_pyengine_notemplate(py::module_ &module_) -> void {
     py::class_< pokerengine::engine_traits >(module_, "EngineTraits", py::module_local())
-                    .def(py::init< int32_t, int32_t, uint8_t >(),
+                    .def(py::init< int32_t, int32_t, uint8_t, int32_t >(),
                          py::arg("sb_bet"),
                          py::arg("bb_bet"),
-                         py::arg("bb_mult"))
+                         py::arg("bb_mult"),
+                         py::arg("min_raise"))
                     .def_property("sb_bet",
                                   &pokerengine::engine_traits::get_sb_bet,
                                   &pokerengine::engine_traits::set_sb_bet)

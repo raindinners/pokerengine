@@ -37,6 +37,7 @@ class Player:
         front: int,
         round_bet: int,
         state: StateE,
+        id: str,
     ) -> None: ...
     def __eq__(self, other: Player) -> bool: ...
 
@@ -72,7 +73,7 @@ class EngineTraits:
     min_raise: int
     """Game minimal raise size."""
 
-    def __init__(self, sb_bet: int, bb_bet: int, bb_mult: int) -> None: ...
+    def __init__(self, sb_bet: int, bb_bet: int, bb_mult: int, min_raise: int = -1) -> None: ...
 
 class EngineDetail: ...
 
