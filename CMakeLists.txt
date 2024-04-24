@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 
-project(pokerengine VERSION 1.5)
+project(pokerengine VERSION 1.5.1)
 
 include(cmake/Packages.cmake)
 
@@ -42,7 +42,6 @@ set(HEADER_FILES
 
 find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
 find_package(pybind11 CONFIG REQUIRED)
-find_package(magic_enum CONFIG REQUIRED)
 
 python_add_library(${LIBRARY_NAME} MODULE ${SOURCE_FILES} ${HEADER_FILES} WITH_SOABI)
 target_link_libraries(${LIBRARY_NAME} PRIVATE pybind11::headers magic_enum::magic_enum)
