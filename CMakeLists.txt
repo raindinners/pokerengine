@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.12)
 
-project(pokerengine VERSION 1.4)
+project(pokerengine VERSION 1.5)
+
+include(cmake/Packages.cmake)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
