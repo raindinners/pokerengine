@@ -99,7 +99,7 @@ public:
     }
 
     explicit operator std::string() const {
-        return std::string{ get_rank() } + std::string{ constants::SEPARATOR } + std::string{ get_suit() };
+        return std::string{ get_rank() } + std::string{ get_suit() };
     }
 
     [[nodiscard]] auto as_bitset() const noexcept -> types::bit_set {

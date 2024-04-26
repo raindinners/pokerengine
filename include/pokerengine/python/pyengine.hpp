@@ -75,8 +75,8 @@ auto setup_pyengine_template(py::module_ &module_, const std::string &pyclass_po
                     .def("actionable",
                          &pokerengine::positions_manager< pokerengine::engine< A, B > >::get_actionable)
                     .def_property_readonly(
-                                    "terminal_state",
-                                    &pokerengine::positions_manager< pokerengine::engine< A, B > >::in_terminal_state)
+                                    "showdown",
+                                    &pokerengine::positions_manager< pokerengine::engine< A, B > >::is_showdown)
                     .def_property_readonly(
                                     "number_alive",
                                     &pokerengine::positions_manager< pokerengine::engine< A, B > >::get_number_alive)
@@ -117,8 +117,8 @@ auto setup_pyengine_template(py::module_ &module_, const std::string &pyclass_po
                     .def(py::init< pokerengine::engine< A, B > & >(), py::arg("engine"))
                     .def("reset", &pokerengine::round_manager< pokerengine::engine< A, B > >::reset)
                     .def_property_readonly(
-                                    "showdown",
-                                    &pokerengine::round_manager< pokerengine::engine< A, B > >::is_showdown)
+                                    "terminal_state",
+                                    &pokerengine::round_manager< pokerengine::engine< A, B > >::in_terminal_state)
                     .def_property("round",
                                   &pokerengine::round_manager< pokerengine::engine< A, B > >::get_round,
                                   &pokerengine::round_manager< pokerengine::engine< A, B > >::set_round)
@@ -168,7 +168,7 @@ auto setup_pyengine_notemplate(py::module_ &module_) -> void {
     py::class_< pokerengine::player_action >(module_, "PlayerAction", py::module_local())
                     .def(py::init< int32_t, pokerengine::enums::action, pokerengine::enums::position >(),
                          py::arg("amount"),
-                         py::arg("amount"),
+                         py::arg("action"),
                          py::arg("position"))
                     .def(py::self == py::self, py::arg("other")) // NOLINT
                     .def("__str__",

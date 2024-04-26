@@ -13,7 +13,6 @@ namespace python {
 auto setup_constants_all(py::module_ &module_) -> void {
     auto constants = module_.def_submodule("constants");
 
-    constants.attr("SEPARATOR") = pokerengine::constants::SEPARATOR;
     constants.attr("MASK_RANKS_NUMBER") = pokerengine::constants::MASK_RANKS_NUMBER;
     constants.attr("MASK_RANKS") = pokerengine::constants::MASK_RANKS;
     constants.attr("RANKS") = pokerengine::constants::RANKS;

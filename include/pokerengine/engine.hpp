@@ -573,7 +573,7 @@ public:
         });
     }
 
-    [[nodiscard]] auto in_terminal_state() const -> bool {
+    [[nodiscard]] auto is_showdown() const -> bool {
         return get_number_alive() > 1;
     }
 
@@ -707,7 +707,7 @@ public:
         set_flop_dealt(false);
     }
 
-    [[nodiscard]] auto is_showdown() const noexcept -> bool {
+    [[nodiscard]] auto in_terminal_state() const noexcept -> bool {
         return get_round() == enums::round::showdown;
     }
 

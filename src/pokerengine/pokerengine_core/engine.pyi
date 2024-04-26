@@ -227,11 +227,11 @@ class Positions(EngineDetail):
         :return: Current player
         """
     @property
-    def terminal_state(self) -> bool:
+    def showdown(self) -> bool:
         """
-        Use this method to get game state.
+        Use this method to get is game is showdown.
 
-        :return: Is number alive is greater than one
+        :return: Is game is showdown
         """
     def actionable(self) -> int:
         """
@@ -308,11 +308,11 @@ class Round(EngineDetail):
 
     def __init__(self, engine: Engine) -> None: ...
     @property
-    def showdown(self) -> bool:
+    def terminal_state(self) -> bool:
         """
-        Use this method to get is game is showdown.
+        Use this method to get game state.
 
-        :return: Is game is showdown
+        :return: Is number alive is greater than one
         """
     def reset(self) -> None:
         """

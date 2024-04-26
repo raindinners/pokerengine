@@ -12,8 +12,6 @@
 #include "pokerengine.hpp"
 
 namespace pokerengine::constants {
-const std::string_view SEPARATOR = "_";
-
 const uint8_t MASK_RANKS_NUMBER = 0b0000'1111;
 const uint16_t MASK_RANKS = 0b0001'1111'1111'1111;
 
