@@ -19,7 +19,6 @@ from pokerengine.pokerengine_core.constants import (
     RAKE01,
     RAKE_MULTI01,
     RANKS,
-    SEPARATOR,
     SUITS,
 )
 
@@ -42,6 +41,5 @@ __all__ = (
     "RAKE01",
     "RAKE_MULTI01",
     "RANKS",
-    "SEPARATOR",
     "SUITS",
 )
