@@ -459,7 +459,7 @@ public:
                         this->engine.get_engine_traits().get_bb_bet(),
                         this->engine.get_engine_traits().get_min_raise(),
                         this->engine.pot.get_round_highest_bet(),
-                        player.front,
+                        player.round_bet,
                         player.behind);
     }
 
