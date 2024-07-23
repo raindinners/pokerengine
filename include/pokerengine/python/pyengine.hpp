@@ -107,11 +107,11 @@ auto setup_pyengine_template(py::module_ &module_, const std::string &pyclass_po
                     .def("pot", &pokerengine::pot_manager< pokerengine::engine< A, B >, A, B >::pot)
                     .def("pot_rake", &pokerengine::pot_manager< pokerengine::engine< A, B >, A, B >::pot_rake)
                     .def_property_readonly(
-                                    "highest_bet",
-                                    &pokerengine::pot_manager< pokerengine::engine< A, B >, A, B >::get_highest_bet)
+                                    "game_highest_bet",
+                                    &pokerengine::pot_manager< pokerengine::engine< A, B >, A, B >::get_highest_game_bet)
                     .def_property_readonly(
                                     "round_highest_bet",
-                                    &pokerengine::pot_manager< pokerengine::engine< A, B >, A, B >::get_round_highest_bet);
+                                    &pokerengine::pot_manager< pokerengine::engine< A, B >, A, B >::get_highest_bet);
     py::class_< pokerengine::round_manager< pokerengine::engine< A, B > > >(
                     module_, ("Round" + pyclass_postfix).c_str(), py::module_local())
                     .def(py::init< pokerengine::engine< A, B > & >(), py::arg("engine"))

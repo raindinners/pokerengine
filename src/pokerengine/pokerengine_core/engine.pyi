@@ -259,7 +259,7 @@ class Pot(EngineDetail):
 
     def __init__(self, engine: Engine) -> None: ...
     @property
-    def highest_bet(self) -> int:
+    def game_highest_bet(self) -> int:
         """
         Use this method to get the highest bet in the whole game.
 

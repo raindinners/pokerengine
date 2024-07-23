@@ -458,7 +458,7 @@ public:
                         player.is_left,
                         this->engine.get_engine_traits().get_bb_bet(),
                         this->engine.get_engine_traits().get_min_raise(),
-                        this->engine.pot.get_round_highest_bet(),
+                        this->engine.pot.get_highest_bet(),
                         player.round_bet,
                         player.behind);
     }
@@ -477,7 +477,7 @@ public:
                         pa,
                         player,
                         this->engine.get_engine_traits().get_min_raise(),
-                        this->engine.pot.get_round_highest_bet()));
+                        this->engine.pot.get_highest_bet()));
 
         auto iterable = this->engine.players.get_players();
         if (auto actions = this->engine.positions.get_actionable();
@@ -501,7 +501,7 @@ public:
                                                 }));
                    this->engine.positions.get_actionable() == 1 &&
                    this->engine.positions.get_future_actionable() == 1 &&
-                   iterable[last_player].round_bet == this->engine.pot.get_round_highest_bet()) {
+                   iterable[last_player].round_bet == this->engine.pot.get_highest_bet()) {
             this->engine.round.set_flop_dealt(true), this->engine.round.set_round(enums::round::showdown);
         } else if (actions == 0) {
             if (this->engine.round.get_round() == enums::round::river) {
@@ -559,7 +559,7 @@ public:
                         iterable.cbegin(), iterable.cend(), 0, [&](int value, auto const &element) -> int {
                             return (element.state == enums::state::init ||
                                     (element.state == enums::state::alive &&
-                                     element.round_bet < this->engine.pot.get_round_highest_bet())) ?
+                                     element.round_bet < this->engine.pot.get_highest_bet())) ?
                                             value + 1 :
                                             value;
                         });
@@ -609,7 +609,7 @@ class pot_manager : public actual::engine_detail< Engine > {
 public:
     using actual::engine_detail< Engine >::engine_detail;
 
-    [[nodiscard]] auto get_highest_bet() const -> int32_t {
+    [[nodiscard]] auto get_highest_game_bet() const -> int32_t {
         auto iterable = this->engine.players.get_players();
         auto max = std::max_element(
                         iterable.cbegin(), iterable.cend(), [](const auto &lhs, const auto &rhs) -> bool {
@@ -619,7 +619,7 @@ public:
         return max == iterable.end() ? 0 : max->front;
     }
 
-    [[nodiscard]] auto get_round_highest_bet() const -> int32_t {
+    [[nodiscard]] auto get_highest_bet() const -> int32_t {
         auto iterable = this->engine.players.get_players();
         auto max = std::max_element(
                         iterable.cbegin(), iterable.cend(), [](const auto &lhs, const auto &rhs) -> bool {
@@ -649,7 +649,7 @@ public:
 
     auto pay(const cards &cards) -> std::vector< std::pair< result, int32_t > > {
         auto iterable = this->engine.players.get_players();
-        auto pots = actual::get_all_pots(iterable, get_highest_bet());
+        auto pots = actual::get_all_pots(iterable, get_highest_game_bet());
         auto chips = std::accumulate(
                         pots.cbegin(),
                         pots.cend(),
@@ -678,7 +678,7 @@ public:
     auto pay_noshowdown() -> std::vector< int32_t > {
         auto iterable = this->engine.players.get_players();
         auto adjusted_pot = actual::get_adjust_pot< A, B >(
-                        iterable, get_highest_bet(), this->engine.round.get_flop_dealt());
+                        iterable, get_highest_game_bet(), this->engine.round.get_flop_dealt());
         auto winner = std::distance(
                         iterable.cbegin(),
                         std::find_if(iterable.cbegin(), iterable.cend(), [](const auto &element) {
