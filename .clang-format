@@ -107,7 +107,7 @@ ForEachMacros:
   - STRV_FOREACH_BACKWARDS
   - STRV_FOREACH_PAIR
 IndentPPDirectives: AfterHash
-IndentWidth: 4
+IndentWidth: 2
 IndentWrappedFunctionNames: true
 MaxEmptyLinesToKeep: 2
 PenaltyBreakAssignment: 65

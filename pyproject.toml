@@ -4,7 +4,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "pokerengine"
-version = "1.7.1"
+version = "1.7.2"
 description = "Poker Library"
 readme = "README.md"
 authors = [

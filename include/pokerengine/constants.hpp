@@ -36,10 +36,10 @@ const uint8_t MIN_PLAYERS = 2;
 const uint8_t MAX_PLAYERS = 7;
 
 template < size_t A = 0, size_t B = 1 >
-    requires(A >= 0 && B > 0 && A < B)
+  requires(A >= 0 && B > 0 && A < B)
 const float RAKE = 1.0f * A / B;
 template < size_t A = 0, size_t B = 1 >
-    requires(A >= 0 && B > 0 && A < B)
+  requires(A >= 0 && B > 0 && A < B)
 const float RAKE_MULTI = 1.0f - RAKE< A, B >;
 
 const uint8_t OFFSET_MINOR = RANKS;
@@ -47,8 +47,8 @@ const uint8_t OFFSET_MAJOR = OFFSET_MINOR + 4;
 const uint8_t OFFSET_TYPE = OFFSET_MAJOR + 4;
 
 const std::array< const std::string, 9 > COMBINATIONS = {
-    "high card,", "a pair of",     "two pairs,",      "three of a kind,", "a straight,",
-    "a flush,",   "a full house,", "four of a kind,", "a straight flush,"
+  "high card,", "a pair of",     "two pairs,",      "three of a kind,", "a straight,",
+  "a flush,",   "a full house,", "four of a kind,", "a straight flush,"
 };
 } // namespace pokerengine::constants
 
