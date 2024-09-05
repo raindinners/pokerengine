@@ -121,10 +121,6 @@ auto is_raise_available(
                     (committed < highest_round_bet && (highest_round_bet - committed >= min_raise));
 }
 
-auto is_allin_available(int32_t remaining) noexcept -> bool {
-    return remaining > 0;
-}
-
 auto get_possible_actions(
                 enums::round round,
                 enums::position player,
@@ -146,19 +142,15 @@ auto get_possible_actions(
     }
 
     if (is_bet_available(bb_bet, highest_round_bet, remaining)) {
-        actions.emplace_back(bb_bet, enums::action::bet, player);
+        actions.emplace_back(min_raise, enums::action::bet, player);
+    } else {
+        if (is_raise_available(state, highest_round_bet, min_raise, committed, remaining)) {
+            actions.emplace_back(remaining, enums::action::raise, player);
+        }
     }
 
     if (is_call_available(highest_round_bet, committed, remaining)) {
         actions.emplace_back(highest_round_bet - committed, enums::action::call, player);
-    }
-
-    if (is_raise_available(state, highest_round_bet, min_raise, committed, remaining)) {
-        actions.emplace_back(remaining, enums::action::raise, player);
-    }
-
-    if (is_allin_available(remaining)) {
-        actions.emplace_back(remaining, enums::action::allin, player);
     }
 
     return actions;
@@ -191,8 +183,7 @@ auto execute_action(const player_action &pa, player &player, int32_t min_raise, 
     } break;
     case enums::action::call:
     case enums::action::bet:
-    case enums::action::raise:
-    case enums::action::allin: {
+    case enums::action::raise: {
         int32_t raise_size = pa.amount + player.round_bet - highest_round_bet;
         if (raise_size > min_raise) {
             new_min_raise = raise_size;
@@ -422,6 +413,12 @@ public:
     }
 
     auto add_player(int32_t stack, const std::string &id) -> void {
+        for (const auto &player : players_) {
+            if (player.id == id) {
+                throw std::runtime_error{ "Player already in the game" };
+            }
+        }
+
         auto traits = this->engine.get_engine_traits();
         if (stack < traits.get_bb_bet() * traits.get_bb_mult()) {
             throw std::runtime_error{ "Player stack less than game minimal stacksize" };
@@ -509,7 +506,8 @@ public:
             } else {
                 this->engine.positions.set_next_round_player();
 
-                this->engine.get_engine_traits().set_min_raise(this->engine.get_engine_traits().get_bb_bet());
+                this->engine.get_engine_traits().set_min_raise(
+                                this->engine.get_engine_traits().get_bb_bet() * 2);
 
                 auto next_round = actual::get_next_round(this->engine.round.get_round());
                 this->engine.round.set_round(std::get< 0 >(next_round)),
@@ -826,7 +824,7 @@ public:
     }
 
     auto stop() -> void {
-        engine_traits_.set_min_raise(engine_traits_.get_bb_bet());
+        engine_traits_.set_min_raise(engine_traits_.get_bb_bet() * 2);
         round.reset();
     }
 

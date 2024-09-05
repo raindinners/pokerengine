@@ -19,7 +19,6 @@ enum class action : int8_t {
     call = 2,
     bet = 3,
     raise = 4,
-    allin = 5,
 };
 
 enum class combination : int8_t {

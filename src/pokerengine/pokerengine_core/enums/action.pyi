@@ -13,4 +13,3 @@ class ActionE(Enum):
     CALL = 2
     BET = 3
     RAISE = 4
-    ALLIN = 5

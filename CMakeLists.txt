@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 
-project(pokerengine VERSION 1.7)
+project(pokerengine VERSION 1.7.1)
 
 include(cmake/Packages.cmake)
 

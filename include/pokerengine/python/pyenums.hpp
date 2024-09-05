@@ -19,8 +19,7 @@ auto setup_action_enum(py::module_ &module_) -> void {
                     .value("CHECK", pokerengine::enums::action::check)
                     .value("CALL", pokerengine::enums::action::call)
                     .value("BET", pokerengine::enums::action::bet)
-                    .value("RAISE", pokerengine::enums::action::raise)
-                    .value("ALLIN", pokerengine::enums::action::allin);
+                    .value("RAISE", pokerengine::enums::action::raise);
 }
 
 auto setup_combination_enum(py::module_ &module_) -> void {
