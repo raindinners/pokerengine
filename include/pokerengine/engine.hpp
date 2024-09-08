@@ -104,7 +104,7 @@ auto is_bet_available(int32_t bb_bet, int32_t highest_round_bet, int32_t remaini
 }
 
 auto is_call_available(int32_t highest_round_bet, int32_t committed, int32_t remaining) noexcept -> bool {
-  return highest_round_bet && (committed < highest_round_bet && (committed + remaining) > highest_round_bet);
+  return highest_round_bet && (committed < highest_round_bet && (committed + remaining) >= highest_round_bet);
 }
 
 auto is_raise_available(
@@ -113,7 +113,7 @@ auto is_raise_available(
                 int32_t min_raise,
                 int32_t committed,
                 int32_t remaining) -> bool {
-  if ((committed + remaining) <= highest_round_bet + min_raise) {
+  if ((committed + remaining) <= highest_round_bet) {
     return false;
   }
 
@@ -142,7 +142,7 @@ auto get_possible_actions(
   }
 
   if (is_bet_available(bb_bet, highest_round_bet, remaining)) {
-    actions.emplace_back(min_raise, enums::action::bet, player);
+    actions.emplace_back(remaining, enums::action::bet, player);
   } else {
     if (is_raise_available(state, highest_round_bet, min_raise, committed, remaining)) {
       actions.emplace_back(remaining, enums::action::raise, player);
@@ -164,6 +164,8 @@ auto is_normal_action(
   return pa.position == player && player != enums::position::none &&
                   (std::find_if(all_actions.cbegin(), all_actions.cend(), [&](const auto &element) -> bool {
                      return (element == pa) ||
+                                     (pa.action == enums::action::bet && element.action == enums::action::bet &&
+                                      pa.amount < element.amount && pa.amount >= min_raise) ||
                                      (pa.action == enums::action::raise &&
                                       element.action == enums::action::raise && pa.amount < element.amount &&
                                       pa.amount >= min_raise);
