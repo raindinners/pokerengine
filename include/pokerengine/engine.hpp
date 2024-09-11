@@ -104,6 +104,10 @@ auto is_bet_available(int32_t bb_bet, int32_t highest_round_bet, int32_t remaini
 }
 
 auto is_call_available(int32_t highest_round_bet, int32_t committed, int32_t remaining) noexcept -> bool {
+  if (committed + remaining <= highest_round_bet) {
+    return true;
+  }
+
   return highest_round_bet && (committed < highest_round_bet && (committed + remaining) >= highest_round_bet);
 }
 
@@ -472,11 +476,13 @@ class actions_manager : public actual::engine_detail< Engine > {
     }
 
     auto &player = this->engine.positions.get_player();
-    this->engine.get_engine_traits().set_min_raise(actual::execute_action(
-                    pa,
-                    player,
-                    this->engine.get_engine_traits().get_min_raise(),
-                    this->engine.pot.get_highest_bet()));
+    this->engine.get_engine_traits().set_min_raise(
+                    actual::execute_action(
+                                    pa,
+                                    player,
+                                    this->engine.get_engine_traits().get_min_raise(),
+                                    this->engine.pot.get_highest_bet()) *
+                    2);
 
     auto iterable = this->engine.players.get_players();
     if (auto actions = this->engine.positions.get_actionable();
@@ -815,7 +821,7 @@ class engine {
   }
 
   auto stop() -> void {
-    engine_traits_.set_min_raise(engine_traits_.get_bb_bet());
+    engine_traits_.set_min_raise(engine_traits_.get_bb_bet() * 2);
     round.reset();
   }
 
