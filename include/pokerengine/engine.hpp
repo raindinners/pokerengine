@@ -192,7 +192,7 @@ auto execute_action(const player_action &pa, player &player, int32_t min_raise, 
   case enums::action::raise: {
     int32_t raise_size = pa.amount + player.round_bet - highest_round_bet;
     if (raise_size > min_raise) {
-      new_min_raise = raise_size;
+      new_min_raise = raise_size * 2;
     }
 
     player.behind -= pa.amount;
@@ -476,13 +476,11 @@ class actions_manager : public actual::engine_detail< Engine > {
     }
 
     auto &player = this->engine.positions.get_player();
-    this->engine.get_engine_traits().set_min_raise(
-                    actual::execute_action(
-                                    pa,
-                                    player,
-                                    this->engine.get_engine_traits().get_min_raise(),
-                                    this->engine.pot.get_highest_bet()) *
-                    2);
+    this->engine.get_engine_traits().set_min_raise(actual::execute_action(
+                    pa,
+                    player,
+                    this->engine.get_engine_traits().get_min_raise(),
+                    this->engine.pot.get_highest_bet()));
 
     auto iterable = this->engine.players.get_players();
     if (auto actions = this->engine.positions.get_actionable();
