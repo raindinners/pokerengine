@@ -192,7 +192,7 @@ auto execute_action(const player_action &pa, player &player, int32_t min_raise, 
   case enums::action::raise: {
     int32_t raise_size = pa.amount + player.round_bet - highest_round_bet;
     if (raise_size > min_raise) {
-      new_min_raise = raise_size * 2;
+      new_min_raise = raise_size;
     }
 
     player.behind -= pa.amount;
@@ -819,7 +819,7 @@ class engine {
   }
 
   auto stop() -> void {
-    engine_traits_.set_min_raise(engine_traits_.get_bb_bet() * 2);
+    engine_traits_.set_min_raise(engine_traits_.get_bb_bet());
     round.reset();
   }
 
